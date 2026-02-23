@@ -72,6 +72,168 @@ b,strong{font-weight:400}
 }
 .nav-pill:hover{border-color:var(--aqua);color:var(--aqua)!important}
 
+/* ── NAV DROPDOWN ─────────────────────────────────────────────── */
+.nav-dropdown{position:relative}
+.nav-dropdown-menu{
+  position:absolute;top:calc(100% + 10px);left:50%;
+  transform:translateX(-50%) translateY(-6px);
+  background:rgba(10,10,10,0.97);backdrop-filter:blur(20px);
+  border:1px solid var(--border);min-width:150px;
+  opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;
+  z-index:300;
+}
+.nav-dropdown-menu.open{
+  opacity:1;pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+}
+.nav-dropdown-trigger{cursor:pointer}
+.nav-dropdown-item{
+  display:block;padding:13px 22px;
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(244,243,239,.55);font-weight:300;
+  transition:all .15s;cursor:pointer;border:none;background:none;
+  width:100%;text-align:left;
+}
+.nav-dropdown-item:hover{color:var(--aqua);background:var(--aqua-ghost)}
+.nav-dropdown-item+.nav-dropdown-item{border-top:1px solid var(--border)}
+
+/* ── ESTADO SELECTOR ──────────────────────────────────────────── */
+.ev-estado-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.estado-label{font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.6}
+.estado-btns{display:flex;gap:4px}
+.estado-btn{
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--border-light);background:transparent;
+  color:var(--muted);padding:4px 9px;transition:all .15s;font-weight:300;cursor:pointer;
+}
+.estado-btn:hover{border-color:rgba(244,243,239,.3);color:var(--white)}
+.estado-btn.estado-in{border-color:var(--green);background:rgba(34,197,94,.12);color:var(--green)}
+.estado-btn.estado-plan{border-color:var(--aqua);background:rgba(0,180,204,.1);color:var(--aqua)}
+.estado-btn.estado-nope{border-color:#EF4444;background:rgba(239,68,68,.1);color:#EF4444}
+.estado-btn.estado-done{border-color:#A855F7;background:rgba(168,85,247,.1);color:#A855F7}
+
+/* ── MODAL ────────────────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,.8);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal-box{
+  background:var(--surface);border:1px solid var(--border-light);
+  width:min(480px,92vw);padding:36px;
+  transform:translateY(14px);transition:transform .2s;
+  max-height:88vh;overflow-y:auto;
+}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-title{
+  font-size:14px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--white);margin-bottom:24px;font-weight:300;
+}
+.modal-field{margin-bottom:16px}
+.modal-field label{
+  display:block;font-family:var(--ff-mono);font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:6px;
+}
+.modal-field input,.modal-field select,.modal-field textarea{
+  width:100%;background:var(--surface2);border:1px solid var(--border-light);
+  color:var(--white);padding:10px 12px;font-family:var(--ff);font-weight:300;
+  font-size:13px;outline:none;transition:border-color .15s;
+}
+.modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus{border-color:var(--aqua)}
+.modal-field select option{background:var(--surface2)}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:24px}
+.modal-save{
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--aqua);background:transparent;
+  color:var(--aqua);padding:10px 22px;cursor:pointer;transition:all .15s;
+}
+.modal-save:hover{background:var(--aqua);color:#000}
+.modal-cancel{
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--border-light);background:transparent;
+  color:var(--muted);padding:10px 22px;cursor:pointer;transition:all .15s;
+}
+.modal-cancel:hover{border-color:var(--white);color:var(--white)}
+.modal-del{
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--border-light);background:transparent;
+  color:var(--muted);padding:10px 22px;cursor:pointer;transition:all .15s;margin-right:auto;
+}
+.modal-del:hover{border-color:#EF4444;color:#EF4444}
+
+/* add-event button */
+.add-ev-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--border-light);background:transparent;
+  color:var(--muted);padding:7px 14px;cursor:pointer;transition:all .15s;font-weight:300;
+}
+.add-ev-btn:hover{border-color:var(--aqua);color:var(--aqua)}
+.ev-edit-hover{
+  opacity:0;transition:opacity .15s;
+  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--border-light);background:transparent;
+  color:var(--muted);padding:3px 8px;cursor:pointer;transition:all .15s;
+}
+.ev-edit-hover:hover{border-color:var(--aqua);color:var(--aqua)}
+.event-item:hover .ev-edit-hover{opacity:1}
+
+/* ── TIPO PAGE ────────────────────────────────────────────────── */
+#page-tipo{background:var(--paper)}
+.tipo-hero{
+  background:var(--surface);padding:96px 52px 56px;
+  border-bottom:1px solid var(--border);
+}
+.tipo-hero-inner{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap;
+}
+.tipo-more{
+  flex-shrink:0;max-width:320px;
+  padding:24px 28px;border:1px solid var(--border-light);background:var(--surface2);
+}
+.tipo-more-label{
+  font-family:var(--ff-mono);font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+}
+.tipo-more-title{
+  font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--white);margin-bottom:14px;font-weight:300;
+}
+.tipo-links-list{display:flex;flex-direction:column;gap:6px}
+.tipo-link-item{display:flex;align-items:center;gap:8px}
+.tipo-link-input{
+  flex:1;background:transparent;border:none;border-bottom:1px dashed var(--border-light);
+  color:var(--aqua);font-size:12px;padding:4px 0;outline:none;
+  font-family:var(--ff);font-weight:300;transition:border-color .15s;
+}
+.tipo-link-input:focus{border-bottom-color:var(--aqua)}
+.tipo-link-input::placeholder{color:var(--muted)}
+.tipo-link-del{
+  background:none;border:none;color:var(--muted);cursor:pointer;
+  font-size:14px;line-height:1;padding:2px 4px;transition:color .15s;
+}
+.tipo-link-del:hover{color:#EF4444}
+.tipo-link-add{
+  margin-top:8px;background:none;border:none;
+  font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;transition:color .15s;padding:0;font-family:var(--ff);
+}
+.tipo-link-add:hover{color:var(--aqua)}
+
+.tipo-ev-section{padding:64px 52px;border-top:1px solid var(--border)}
+.tipo-ev-empty{
+  padding:48px 0;opacity:.35;font-family:var(--ff-mono);font-size:11px;
+  letter-spacing:.1em;line-height:2;
+}
+.tipo-ev-group{margin-bottom:48px}
+.tipo-ev-group-label{
+  font-family:var(--ff-mono);font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);margin-bottom:20px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+
 /* ── PAGES ────────────────────────────────────────────────────── */
 .page{display:none}.page.active{display:block}
 
@@ -142,6 +304,10 @@ b,strong{font-weight:400}
   color:var(--muted);padding:6px 14px;transition:all .15s;font-weight:300;
 }
 .f-btn:hover,.f-btn.on{border-color:var(--aqua);color:var(--aqua)}
+.f-btn.f-in.on{border-color:var(--green);color:var(--green)}
+.f-btn.f-plan.on{border-color:var(--aqua);color:var(--aqua)}
+.f-btn.f-nope.on{border-color:#EF4444;color:#EF4444}
+.f-btn.f-done.on{border-color:#A855F7;color:#A855F7}
 
 /* ── CALENDAR SECTION ─────────────────────────────────────────── */
 #calendario{padding:80px 52px;background:var(--paper)}
@@ -177,15 +343,24 @@ b,strong{font-weight:400}
 .cal-day.today{
   background:var(--white);color:var(--ink);border-radius:50%;
 }
-.cal-day.has-event{
-  background:var(--aqua);color:#000;
-  cursor:pointer;
-}
-.cal-day.has-event:hover{background:var(--aqua-mid);transform:scale(1.15)}
-.cal-day.event-range{background:var(--aqua-ghost);color:var(--aqua-mid)}
-.cal-day.event-range-start{background:var(--aqua);color:#000;cursor:pointer}
-.cal-day.event-range-start:hover{background:var(--aqua-mid);transform:scale(1.12)}
-.cal-day.event-range-end{background:rgba(0,180,204,.15);color:var(--aqua-mid)}
+/* type-based event colors */
+.cal-day.has-event{cursor:pointer}
+.cal-day.has-event:hover{transform:scale(1.15)}
+.cal-day.ev-hyrox,.cal-day.ev-hybrid,.cal-day.ev-games{background:#444132;color:#e8d9a0}
+.cal-day.ev-hyrox:hover,.cal-day.ev-hybrid:hover,.cal-day.ev-games:hover{background:#5a5640}
+.cal-day.ev-swim{background:#A2CAD6;color:#0d2d36}
+.cal-day.ev-swim:hover{background:#8ab8c6}
+.cal-day.ev-run{background:#4E594F;color:#c8d9c9}
+.cal-day.ev-run:hover{background:#5e6b5f}
+/* range classes */
+.cal-day.event-range-start{cursor:pointer}
+.cal-day.event-range-start:hover{transform:scale(1.12)}
+.cal-day.ev-range-hyrox,.cal-day.ev-range-hybrid,.cal-day.ev-range-games{background:#444132;color:#e8d9a0}
+.cal-day.ev-range-hyrox:hover,.cal-day.ev-range-hybrid:hover,.cal-day.ev-range-games:hover{background:#5a5640}
+.cal-day.ev-range-swim{background:#A2CAD6;color:#0d2d36}
+.cal-day.ev-range-run{background:#4E594F;color:#c8d9c9}
+.cal-day.event-range{background:rgba(68,65,50,.35);color:rgba(232,217,160,.6)}
+.cal-day.event-range-end{background:rgba(68,65,50,.2);color:rgba(232,217,160,.4)}
 .day-tip{
   position:absolute;bottom:calc(100% + 5px);left:50%;
   transform:translateX(-50%);
@@ -196,6 +371,11 @@ b,strong{font-weight:400}
 }
 .cal-day.has-event:hover .day-tip,
 .cal-day.event-range-start:hover .day-tip{opacity:1}
+
+/* calendar legend */
+.cal-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px}
+.cal-legend-item{display:flex;align-items:center;gap:6px;font-family:var(--ff-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cal-legend-dot{width:10px;height:10px;border-radius:1px;flex-shrink:0}
 
 /* ── EVENT LIST ───────────────────────────────────────────────── */
 #event-list-section{padding:80px 52px;border-top:1px solid var(--border)}
@@ -397,8 +577,8 @@ b,strong{font-weight:400}
 }
 .hyrox-tbl tr:hover td{background:var(--aqua-ghost)}
 .hyrox-tbl tr:hover td.station{background:var(--aqua-ghost)}
-.hyrox-tbl td.best{color:var(--green)}
-.hyrox-tbl td.worst{color:#EF4444}
+.hyrox-tbl td.best{color:#7BA882}
+.hyrox-tbl td.worst{color:#C97B5E}
 .col-header{display:flex;flex-direction:column;align-items:center;gap:2px}
 .col-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
 .badge-mod{
@@ -417,16 +597,129 @@ footer{
 .f-logo em{color:var(--aqua);font-style:normal}
 footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-spacing:.1em}
 
-@media(max-width:900px){
-  #nav,#event-list-section,#calendario,.tab-pane,.ev-detail-hero,.results-hero,footer{padding-left:20px;padding-right:20px}
+/* ══ MOBILE ═══════════════════════════════════════════════════════ */
+@media(max-width:768px){
+
+  /* ── NAV ── */
+  #nav{padding:0 20px;height:52px}
+  .nav-logo{font-size:11px;letter-spacing:.14em}
+  .nav-right{gap:0}
+
+  /* hide desktop nav links, show hamburger */
+  .nav-link,.nav-pill,.nav-dropdown{display:none}
+  #nav-hamburger{display:flex}
+
+  /* mobile drawer */
+  #mobile-drawer{
+    position:fixed;inset:0;z-index:400;
+    background:rgba(10,10,10,.97);backdrop-filter:blur(20px);
+    display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+    padding:52px 32px 40px;
+    opacity:0;pointer-events:none;transform:translateX(100%);
+    transition:opacity .25s,transform .25s;
+  }
+  #mobile-drawer.open{opacity:1;pointer-events:auto;transform:translateX(0)}
+  .mob-nav-item{
+    font-size:28px;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(244,243,239,.45);font-weight:300;padding:12px 0;
+    cursor:pointer;transition:color .15s;border:none;background:none;
+    font-family:var(--ff);width:100%;text-align:left;
+  }
+  .mob-nav-item:hover,.mob-nav-item:active{color:var(--white)}
+  .mob-nav-section{margin-top:24px;border-top:1px solid var(--border);padding-top:20px;width:100%}
+  .mob-nav-sub{
+    font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+    color:rgba(244,243,239,.3);font-weight:300;padding:8px 0;
+    cursor:pointer;transition:color .15s;border:none;background:none;
+    font-family:var(--ff);display:block;width:100%;text-align:left;
+  }
+  .mob-nav-sub:hover{color:var(--aqua)}
+  #mob-close{
+    position:absolute;top:16px;right:20px;
+    background:none;border:none;color:var(--muted);font-size:22px;
+    cursor:pointer;padding:8px;line-height:1;
+  }
+
+  /* ── HERO ── */
+  .hero-title{font-size:clamp(52px,18vw,96px);letter-spacing:.03em}
+  .hero-kicker{font-size:9px;letter-spacing:.22em}
+
+  /* ── CALENDAR ── */
+  #calendario{padding:48px 16px 40px}
+  .cal-header{flex-direction:column;align-items:flex-start;gap:20px;margin-bottom:36px}
+  .cal-header > div:last-child{width:100%;align-items:flex-start}
+  .filter-bar{gap:4px;flex-wrap:wrap}
+  .f-btn{font-size:9px;padding:5px 10px;letter-spacing:.08em}
   .year-grid{grid-template-columns:repeat(2,1fr)}
+  .month-block{padding:14px 10px 16px}
+  .month-name{font-size:10px}
+  .cal-grid{gap:1px}
+  .cal-day{font-size:9px}
+  .cal-legend{gap:10px;margin-top:14px}
+  .cal-legend-item{font-size:8px;letter-spacing:.06em}
+
+  /* ── EVENT LIST ── */
+  #event-list-section{padding:40px 16px}
+  .event-item{
+    grid-template-columns:1fr;gap:12px;
+    padding:20px 0;
+  }
+  .ev-date{display:flex;align-items:baseline;gap:8px}
+  .ev-date strong{font-size:18px;display:inline}
+  .ev-name{font-size:20px;margin-bottom:6px}
+  .ev-right-col{flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .ev-estado-wrap{flex-direction:row;align-items:center;gap:8px}
+  .estado-label{margin-bottom:0}
+  .estado-btns{gap:4px}
+  .estado-btn{font-size:8px;padding:3px 7px}
+  .ev-avatars{display:none}
+  .ev-edit-hover{display:none}
+  .add-ev-btn{font-size:9px;padding:6px 12px}
+
+  /* ── EVENT DETAIL ── */
+  .ev-detail-hero{padding:72px 20px 40px}
+  .ev-detail-title{font-size:clamp(28px,10vw,52px)}
+  .ev-detail-meta{grid-template-columns:1fr 1fr;gap:16px}
+  .tabs-bar{padding:0 16px;gap:0;overflow-x:auto;scrollbar-width:none}
+  .tabs-bar::-webkit-scrollbar{display:none}
+  .t-btn{font-size:9px;padding:14px 12px;white-space:nowrap;flex-shrink:0}
+  .tab-pane{padding:24px 16px}
   .block-layout{grid-template-columns:1fr}
+  .block-fields{max-width:100%!important}
+  .check-row{gap:10px}
+  .back-btn{font-size:9px;margin-bottom:20px}
+
+  /* ── TIPO PAGE ── */
+  .tipo-hero{padding:72px 20px 40px}
+  .tipo-hero-inner{flex-direction:column;gap:24px}
+  .tipo-more{max-width:100%;padding:18px 20px}
+  .tipo-ev-section{padding:32px 20px}
+
+  /* ── RESULTADOS ── */
+  .results-hero{padding:72px 20px 40px}
+  .r-filters-row{gap:4px;flex-wrap:wrap}
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .charts-row{grid-template-columns:1fr}
   .chart-box.full{grid-column:span 1}
-  .event-item{grid-template-columns:90px 1fr}
-  .ev-avatars{display:none}
-  .tabs-bar{padding:0 20px}
-  .hero-title{letter-spacing:.03em}
+  .chart-box{padding:18px 14px}
+  .p-btn{font-size:9px;padding:5px 10px}
+
+  /* ── MODAL ── */
+  .modal-box{padding:24px 20px;width:96vw}
+  .modal-field input,.modal-field select,.modal-field textarea{font-size:16px!important} /* prevent zoom on iOS */
+
+  /* ── FOOTER ── */
+  footer{padding:32px 20px!important;flex-direction:column;gap:12px;text-align:center}
+}
+
+@media(max-width:480px){
+  .year-grid{grid-template-columns:1fr 1fr}
+  .ev-detail-meta{grid-template-columns:1fr}
+}
+
+@media(min-width:769px){
+  #nav-hamburger{display:none}
+  #mobile-drawer{display:none!important}
 }
 </style>
 </head>
@@ -435,11 +728,42 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 <nav id="nav">
   <div class="nav-logo" onclick="goHome()">Athletes PRO Club</div>
   <div class="nav-right">
-    <a class="nav-link" onclick="showPage('eventos')">Eventos</a>
+    <div class="nav-dropdown" id="nav-dropdown">
+      <a class="nav-link nav-dropdown-trigger" onclick="toggleDropdown(event)">Eventos
+        <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:4px;vertical-align:middle"><path d="M19 9l-7 7-7-7"/></svg>
+      </a>
+      <div class="nav-dropdown-menu" id="nav-dropdown-menu">
+        <button class="nav-dropdown-item" onclick="closeDropdown();showTipoPage('Hyrox')">Hyrox</button>
+        <button class="nav-dropdown-item" onclick="closeDropdown();showTipoPage('Hybrid')">Hybrid</button>
+        <button class="nav-dropdown-item" onclick="closeDropdown();showTipoPage('Games Series')">Games</button>
+        <button class="nav-dropdown-item" onclick="closeDropdown();showTipoPage('Running / Trail')">Run</button>
+        <button class="nav-dropdown-item" onclick="closeDropdown();showTipoPage('Swim')">Swim</button>
+      </div>
+    </div>
     <a class="nav-link" onclick="showPage('resultados')">Resultados</a>
     <a class="nav-link nav-pill" onclick="goHome();setTimeout(()=>document.getElementById('calendario').scrollIntoView({behavior:'smooth'}),80)">Calendario</a>
+    <!-- hamburger -->
+    <button id="nav-hamburger" onclick="openMobileDrawer()" style="background:none;border:none;color:var(--white);padding:8px;cursor:pointer;display:none">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
 </nav>
+
+<!-- ═══ MOBILE DRAWER ═══ -->
+<div id="mobile-drawer">
+  <button id="mob-close" onclick="closeMobileDrawer()">✕</button>
+  <button class="mob-nav-item" onclick="closeMobileDrawer();goHome()">Inicio</button>
+  <button class="mob-nav-item" onclick="closeMobileDrawer();goHome();setTimeout(()=>document.getElementById('calendario').scrollIntoView({behavior:'smooth'}),80)">Calendario</button>
+  <button class="mob-nav-item" onclick="closeMobileDrawer();showPage('resultados')">Resultados</button>
+  <div class="mob-nav-section">
+    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Eventos</div>
+    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Hyrox')">Hyrox</button>
+    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Hybrid')">Hybrid</button>
+    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Games Series')">Games</button>
+    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Running / Trail')">Run</button>
+    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Swim')">Swim</button>
+  </div>
+</div>
 
 <!-- ═══ HOME ═══ -->
 <div id="page-home" class="page active">
@@ -461,20 +785,43 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
         <div class="eyebrow">Temporada</div>
         <div class="heading">2026</div>
       </div>
-      <div class="filter-bar">
-        <button class="f-btn on" onclick="setFilter('all',this)">Todos</button>
-        <button class="f-btn" onclick="setFilter('Hyrox',this)">Hyrox</button>
-        <button class="f-btn" onclick="setFilter('Hybrid',this)">Hybrid</button>
-        <button class="f-btn" onclick="setFilter('Games Series',this)">Games</button>
-        <button class="f-btn" onclick="setFilter('Running / Trail',this)">Run</button>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px">
+        <div class="filter-bar" id="type-filter-bar">
+          <button class="f-btn on" onclick="setFilter('all',this)">Todos</button>
+          <button class="f-btn" onclick="setFilter('Hyrox',this)">Hyrox</button>
+          <button class="f-btn" onclick="setFilter('Hybrid',this)">Hybrid</button>
+          <button class="f-btn" onclick="setFilter('Games Series',this)">Games</button>
+          <button class="f-btn" onclick="setFilter('Running / Trail',this)">Run</button>
+          <button class="f-btn" onclick="setFilter('Swim',this)">Swim</button>
+        </div>
+        <div class="filter-bar" id="estado-filter-bar">
+          <button class="f-btn on" onclick="setEstadoFilter('all',this)">Todos</button>
+          <button class="f-btn f-in" onclick="setEstadoFilter('in',this)">IN</button>
+          <button class="f-btn f-plan" onclick="setEstadoFilter('plan',this)">Plan</button>
+          <button class="f-btn f-nope" onclick="setEstadoFilter('nope',this)">Nope</button>
+          <button class="f-btn f-done" onclick="setEstadoFilter('done',this)">Done</button>
+        </div>
       </div>
     </div>
     <div class="year-grid" id="year-grid"></div>
+    <div class="cal-legend">
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#444132"></div>Hyrox / Hybrid / Games</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#A2CAD6"></div>Swim</div>
+      <div class="cal-legend-item"><div class="cal-legend-dot" style="background:#4E594F"></div>Run</div>
+    </div>
   </section>
 
   <section id="event-list-section">
-    <div class="eyebrow">Próximas citas</div>
-    <div class="heading" style="margin-bottom:40px">Eventos</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;flex-wrap:wrap;gap:16px">
+      <div>
+        <div class="eyebrow">Próximas citas</div>
+        <div class="heading">Eventos</div>
+      </div>
+      <button class="add-ev-btn" onclick="openEvModal()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Añadir evento
+      </button>
+    </div>
     <div id="events-container"></div>
   </section>
 </div>
@@ -492,6 +839,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <div class="meta-item"><span id="d-date"></span>Fecha</div>
       <div class="meta-item"><span id="d-loc"></span>Lugar</div>
       <div class="meta-item"><span id="d-fmt"></span>Formato</div>
+      <div class="meta-item" id="d-link-wrap" style="display:none"><a id="d-link" href="#" target="_blank" rel="noopener" style="color:var(--aqua);border-bottom:1px solid rgba(0,180,204,.3)"></a>Web</div>
     </div>
   </div>
   <div class="tabs-bar">
@@ -690,6 +1038,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <button class="f-btn" onclick="setSportType('hybrid',this)">Hybrid</button>
       <button class="f-btn" onclick="setSportType('games',this)">Games</button>
       <button class="f-btn" onclick="setSportType('run',this)">Run</button>
+      <button class="f-btn" onclick="setSportType('swim',this)">Swim</button>
     </div>
 
     <!-- Dashboard Tipo 1: Hyrox / Hybrid / Games -->
@@ -709,14 +1058,6 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
         <div class="chart-box full">
           <h5 id="chartEvolTitle">Evolución tiempo total</h5>
           <canvas id="chartEvol" height="70"></canvas>
-        </div>
-        <div class="chart-box">
-          <h5>Radar de estaciones</h5>
-          <canvas id="chartRadar" height="220"></canvas>
-        </div>
-        <div class="chart-box">
-          <h5 id="chartBarsTitle">Sled Push — todos los registros</h5>
-          <canvas id="chartBars" height="220"></canvas>
         </div>
       </div>
 
@@ -770,6 +1111,83 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <div class="eyebrow" style="margin:40px 0 14px">Tabla de carreras</div>
       <div class="tbl-wrap" id="run-tbl-wrap"></div>
     </div>
+
+    <!-- Dashboard Tipo 2: Swim -->
+    <div id="dashboard-swim" style="display:none">
+      <div class="eyebrow" style="margin-top:32px;margin-bottom:12px">Filtrar por persona</div>
+      <div class="r-filters-row" id="swim-person-filters"></div>
+
+      <div class="eyebrow" style="margin-top:28px;margin-bottom:10px">Distancia</div>
+      <div class="r-filters-row" id="swim-dist-filters">
+        <button class="f-btn on" data-d="1000m" onclick="toggleSwimDist('1000m',this)">1000m</button>
+        <button class="f-btn on" data-d="2000m" onclick="toggleSwimDist('2000m',this)">2000m</button>
+        <button class="f-btn on" data-d="3000m" onclick="toggleSwimDist('3000m',this)">3000m</button>
+        <button class="f-btn on" data-d="4000m" onclick="toggleSwimDist('4000m',this)">4000m</button>
+      </div>
+
+      <div style="margin-top:40px" class="charts-row">
+        <div class="chart-box full">
+          <h5 id="swim-chart-title">Tiempos globales — todas las distancias</h5>
+          <canvas id="chartSwimTimes" height="70"></canvas>
+        </div>
+      </div>
+
+      <div class="eyebrow" style="margin:40px 0 14px">Tabla de natación</div>
+      <div class="tbl-wrap" id="swim-tbl-wrap"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TIPO PAGE ═══ -->
+<div id="page-tipo" class="page">
+  <div class="tipo-hero">
+    <button class="back-btn" onclick="goHome()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Volver
+    </button>
+    <div class="tipo-hero-inner">
+      <div>
+        <div class="ev-detail-tag" id="tipo-hero-tag"></div>
+        <h1 class="ev-detail-title" id="tipo-hero-title"></h1>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:16px">
+        <button class="add-ev-btn" onclick="openEvModal(null,state.tipoType)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Añadir evento
+        </button>
+        <div class="tipo-more">
+          <div class="tipo-more-label">More to come</div>
+          <div class="tipo-more-title">Dónde encontrar más</div>
+          <div class="tipo-links-list" id="tipo-links-list"></div>
+          <button class="tipo-link-add" onclick="addTipoLink()">+ Añadir enlace</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tipo-ev-section">
+    <div class="eyebrow" style="margin-bottom:8px">Eventos con estado</div>
+    <div style="display:flex;gap:8px;margin-bottom:40px">
+      <span class="estado-btn estado-in" style="cursor:default;font-size:10px">IN</span>
+    </div>
+    <div id="tipo-ev-list"></div>
+    <div id="tipo-ev-empty" class="tipo-ev-empty" style="display:none">
+      Ningún evento marcado como IN para este tipo.<br>
+      <span style="font-size:10px">Vuelve a la página principal y marca eventos como IN.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL ADD/EDIT EVENT ═══ -->
+<div class="modal-overlay" id="ev-modal" onclick="if(event.target===this)closeEvModal()">
+  <div class="modal-box">
+    <div class="modal-title" id="ev-modal-title">Añadir evento</div>
+    <div id="ev-modal-body"></div>
+    <div class="modal-actions">
+      <button class="modal-del" id="ev-modal-del" style="display:none" onclick="deleteEvModal()">Eliminar</button>
+      <button class="modal-cancel" onclick="closeEvModal()">Cancelar</button>
+      <button class="modal-save" onclick="saveEvModal()">Guardar</button>
+    </div>
   </div>
 </div>
 
@@ -780,35 +1198,38 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 
 <script>
 const USERS=[
-  {id:'ester',name:'Esterchu',init:'E', color:'#E74C3C'},
-  {id:'meri', name:'Meri',    init:'M', color:'#8E44AD'},
-  {id:'ade',  name:'Ade',     init:'A', color:'#E67E22'},
-  {id:'cande',name:'Cande',   init:'C', color:'#00B4CC'},
-  {id:'car',  name:'Car',     init:'Ca',color:'#27AE60'},
+  {id:'ester',name:'Esterchu',init:'E', color:'#C97B5E'},
+  {id:'meri', name:'Meri',    init:'M', color:'#9B7BB5'},
+  {id:'ade',  name:'Ade',     init:'A', color:'#6E9AB5'},
+  {id:'cande',name:'Cande',   init:'C', color:'#7BA882'},
+  {id:'car',  name:'Car',     init:'Ca',color:'#B5A06B'},
 ];
 
 const EVENTS=[
-  {id:'games-ou',    name:'Games Ou',     type:'Games Series',  date:'2026-04-12',displayDate:'12 ABR',sub:'Domingo · 14:00',loc:'Galicia, ES',fmt:'1 día',range:null},
-  {id:'trail-xalo',  name:'Trail Xalo',   type:'Running / Trail',date:'2026-04-25',displayDate:'25 ABR',sub:'Sábado · 14:00', loc:'Xaló, Alicante',fmt:'1 día',range:null},
-  {id:'games-lugo',  name:'Games Lugo',   type:'Games Series',  date:'2026-07-12',displayDate:'12 JUL',sub:'Domingo · 14:00',loc:'Lugo, Galicia',fmt:'1 día',range:null},
-  {id:'hybrid-leiria',name:'HYBRID Leiria',type:'Hybrid',       date:'2026-07-17',displayDate:'17–22 JUL',sub:'Vie → Mié',  loc:'Leiria, Portugal',fmt:'Multi-day',range:{s:new Date(2026,6,17),e:new Date(2026,6,22)}},
-  {id:'games-coru',  name:'Games Coru',   type:'Games Series',  date:'2026-08-30',displayDate:'30 AGO',sub:'Domingo · 14:00',loc:'A Coruña, Galicia',fmt:'1 día',range:null},
-  {id:'games-estrada',name:'Games Estrada',type:'Games Series', date:'2026-09-27',displayDate:'27 SEP',sub:'Domingo · 14:00',loc:'A Estrada, Galicia',fmt:'1 día',range:null},
+  {id:'media-coru',    name:'Media Maratón Coruña', type:'Running / Trail', date:'2026-03-01',displayDate:'1 MAR', sub:'Domingo',              loc:'A Coruña, Galicia',  fmt:'1 día', range:null},
+  {id:'games-pontevedra',name:'Games Pontevedra',   type:'Games Series',   date:'2026-03-08',displayDate:'8 MAR', sub:'Domingo · 14:00',       loc:'Pontevedra, Galicia', fmt:'1 día', range:null},
+  {id:'games-ou',      name:'Games Ou',             type:'Games Series',   date:'2026-04-12',displayDate:'12 ABR',sub:'Domingo · 14:00',       loc:'Galicia, ES',         fmt:'1 día', range:null},
+  {id:'trail-xalo',    name:'Trail Xalo',           type:'Running / Trail',date:'2026-04-25',displayDate:'25 ABR',sub:'Sábado · 14:00',        loc:'Xaló, Alicante',      fmt:'1 día', range:null},
+  {id:'swim-barrie',   name:'Travesía Barrié de la Maza', type:'Swim',     date:'2026-05-25',displayDate:'25 MAY',sub:'Lunes · 1200 / 3500m',  loc:'A Coruña, Galicia',   fmt:'1 día', range:null, link:'https://encoruna.com'},
+  {id:'games-lugo',    name:'Games Lugo',           type:'Games Series',   date:'2026-07-12',displayDate:'12 JUL',sub:'Domingo · 14:00',       loc:'Lugo, Galicia',       fmt:'1 día', range:null},
+  {id:'hybrid-leiria', name:'HYBRID Leiria',        type:'Hybrid',         date:'2026-07-17',displayDate:'17–22 JUL',sub:'Vie → Mié',          loc:'Leiria, Portugal',    fmt:'Multi-day',range:{s:new Date(2026,6,17),e:new Date(2026,6,22)}},
+  {id:'games-coru',    name:'Games Coruña',         type:'Games Series',   date:'2026-08-30',displayDate:'30 AGO',sub:'Domingo · 14:00',       loc:'A Coruña, Galicia',   fmt:'1 día', range:null},
+  {id:'games-estrada', name:'Games Estrada',        type:'Games Series',   date:'2026-09-27',displayDate:'27 SEP',sub:'Domingo · 14:00',       loc:'A Estrada, Galicia',  fmt:'1 día', range:null},
 ];
 
 const HX={
   stations:['Run 1','Run 2','Run 3','Run 4','Run 5','Run 6','Run 7','Run 8','SkiErg','Sled Push','Sled Pull','BBJ','Row','Farmer Carry','S. Lunges','Wall Balls'],
   cols:[
-    {label:'Manu',date:"Oct'24",mod:'single',user:'manu',color:'#00B4CC'},
-    {label:'Manu',date:"Feb'25",mod:'single',user:'manu',color:'#00B4CC'},
-    {label:'Manu',date:"Mar'25",mod:'single',user:'manu',color:'#00B4CC'},
-    {label:'Manu',date:"Nov'25",mod:'single',user:'manu',color:'#00B4CC'},
-    {label:'Manu',date:"Sep'25",mod:'dobles',user:'manu',color:'#8E44AD'},
-    {label:'Carla',date:"Oct'24",mod:'dobles',user:'carla',color:'#E74C3C'},
-    {label:'Carla',date:"Sep'25",mod:'dobles',user:'carla',color:'#E74C3C'},
-    {label:'Ester',date:"Oct'24",mod:'dobles',user:'ester',color:'#E67E22'},
-    {label:'Ester',date:"Sep'25",mod:'dobles',user:'ester',color:'#E67E22'},
-    {label:'Cande',date:"Oct'24",mod:'dobles',user:'cande',color:'#27AE60'},
+    {label:'Manu',date:"Oct'24",mod:'single',user:'manu',color:'#7BA882'},
+    {label:'Manu',date:"Feb'25",mod:'single',user:'manu',color:'#7BA882'},
+    {label:'Manu',date:"Mar'25",mod:'single',user:'manu',color:'#7BA882'},
+    {label:'Manu',date:"Nov'25",mod:'single',user:'manu',color:'#7BA882'},
+    {label:'Manu',date:"Sep'25",mod:'dobles',user:'manu',color:'#9B7BB5'},
+    {label:'Carla',date:"Oct'24",mod:'dobles',user:'carla',color:'#C97B5E'},
+    {label:'Carla',date:"Sep'25",mod:'dobles',user:'carla',color:'#C97B5E'},
+    {label:'Ester',date:"Oct'24",mod:'dobles',user:'ester',color:'#6E9AB5'},
+    {label:'Ester',date:"Sep'25",mod:'dobles',user:'ester',color:'#6E9AB5'},
+    {label:'Cande',date:"Oct'24",mod:'dobles',user:'cande',color:'#B5A06B'},
   ],
   times:[
     ['5:15','4:49','4:29','4:14','4:07','5:04','5:00','6:49','5:35','6:37'],
@@ -832,10 +1253,114 @@ const HX={
 
 // ── STATE ──
 let state={filter:'all',event:null,checks:{},edata:{},
-  persons:new Set(['manu','carla','ester','cande']),modFilter:'all',sportType:'hyrox'};
+  persons:new Set(['manu','carla','ester','cande']),modFilter:'all',sportType:'hyrox',
+  estado:{},tipoType:null,tipoLinks:{},estadoFilter:'all'};
+
+// ── TIPO PAGES ──
+const TIPO_LABELS={'Hyrox':'Hyrox','Hybrid':'Hybrid','Games Series':'Games','Running / Trail':'Run','Swim':'Swim'};
+
+function saveTipoLinks(){try{localStorage.setItem('apc2_tipolinks',JSON.stringify(state.tipoLinks));}catch(e){}}
+
+function showTipoPage(type){
+  state.tipoType=type;
+  document.getElementById('tipo-hero-tag').textContent=TIPO_LABELS[type]||type;
+  document.getElementById('tipo-hero-title').textContent=type;
+  buildTipoPage(type);
+  showPage('tipo');
+}
+
+function buildTipoPage(type){
+  // "More to come" links panel
+  renderTipoLinks(type);
+
+  // Events filtered by type AND estado=in
+  const evs=EVENTS.filter(e=>e.type===type && getEstado(e.id)==='in');
+  const evList=document.getElementById('tipo-ev-list');
+  const evEmpty=document.getElementById('tipo-ev-empty');
+  if(!evs.length){
+    evList.innerHTML='';
+    evEmpty.style.display='block';
+  } else {
+    evEmpty.style.display='none';
+    evList.innerHTML=evs.map(ev=>{
+      const avs=USERS.map(u=>{
+        const k=`${ev.id}_tickets_${u.id}`;
+        const ok=state.checks[k]&&state.checks[k].done;
+        return `<div class="av ${ok?'ok':''}" title="${u.name}">${u.init}</div>`;
+      }).join('');
+      return `<div class="event-item" onclick="openEvent('${ev.id}')">
+        <div class="ev-date"><strong>${ev.displayDate}</strong>${ev.sub}</div>
+        <div>
+          <div class="ev-name">${ev.name}</div>
+          <div class="ev-meta"><span class="ev-tag">${ev.type}</span><span class="ev-loc">${ev.loc}</span></div>
+        </div>
+        <div class="ev-right-col">
+          <div style="display:flex;align-items:center;gap:8px">
+            <button class="ev-edit-hover" onclick="event.stopPropagation();openEvModal('${ev.id}')">editar</button>
+            <div class="ev-avatars" title="Reservas confirmadas">${avs}</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+}
+
+function renderTipoLinks(type){
+  const links=state.tipoLinks[type]||[];
+  const container=document.getElementById('tipo-links-list');
+  if(!container)return;
+  container.innerHTML=links.map((l,i)=>`
+    <div class="tipo-link-item">
+      <input class="tipo-link-input" value="${l}" placeholder="https://..." 
+        onchange="updateTipoLink('${type}',${i},this.value)"
+        oninput="updateTipoLink('${type}',${i},this.value)"/>
+      <button class="tipo-link-del" onclick="removeTipoLink('${type}',${i})">×</button>
+    </div>`).join('');
+}
+
+function addTipoLink(){
+  const type=state.tipoType;
+  if(!state.tipoLinks[type])state.tipoLinks[type]=[];
+  state.tipoLinks[type].push('');
+  saveTipoLinks();
+  renderTipoLinks(type);
+  // focus the new input
+  const inputs=document.querySelectorAll('.tipo-link-input');
+  if(inputs.length)inputs[inputs.length-1].focus();
+}
+
+function updateTipoLink(type,idx,val){
+  if(!state.tipoLinks[type])state.tipoLinks[type]=[];
+  state.tipoLinks[type][idx]=val;
+  saveTipoLinks();
+}
+
+function removeTipoLink(type,idx){
+  if(!state.tipoLinks[type])return;
+  state.tipoLinks[type].splice(idx,1);
+  saveTipoLinks();
+  renderTipoLinks(type);
+}
+
+
 
 function save(){try{localStorage.setItem('apc2_c',JSON.stringify(state.checks));localStorage.setItem('apc2_e',JSON.stringify(state.edata));}catch(e){}}
-function load(){try{const c=localStorage.getItem('apc2_c');if(c)state.checks=JSON.parse(c);const d=localStorage.getItem('apc2_e');if(d)state.edata=JSON.parse(d);const i=localStorage.getItem('apc2_interest');if(i)state.interest=JSON.parse(i);}catch(e){}}
+function load(){
+  try{
+    // Version guard: clear stale data if code version changed
+    const CODE_VER='v20260223-2';
+    if(localStorage.getItem('apc2_ver')!==CODE_VER){
+      localStorage.removeItem('apc2_events'); // clear old extra events — base data is now in code
+      localStorage.setItem('apc2_ver',CODE_VER);
+    }
+    const c=localStorage.getItem('apc2_c');if(c)state.checks=JSON.parse(c);
+    const d=localStorage.getItem('apc2_e');if(d)state.edata=JSON.parse(d);
+    const es=localStorage.getItem('apc2_estado');if(es)state.estado=JSON.parse(es);
+    const tl=localStorage.getItem('apc2_tipolinks');if(tl)state.tipoLinks=JSON.parse(tl);
+    const evs=localStorage.getItem('apc2_events');
+    if(evs){const extra=JSON.parse(evs);extra.forEach(ev=>{if(!EVENTS.find(e=>e.id===ev.id)){if(ev.range&&ev.range.s){ev.range={s:new Date(ev.range.s),e:new Date(ev.range.e)};}EVENTS.push(ev);}});}
+  }catch(e){}
+}
 load();
 
 // ── NAV ──
@@ -843,17 +1368,76 @@ window.addEventListener('scroll',()=>document.getElementById('nav').classList.to
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+id).classList.add('active');scrollTo({top:0,behavior:'smooth'});if(id==='resultados')setTimeout(initCharts,80);}
 function goHome(){showPage('home')}
 
+function toggleDropdown(e){
+  e.stopPropagation();
+  document.getElementById('nav-dropdown-menu').classList.toggle('open');
+}
+function closeDropdown(){
+  document.getElementById('nav-dropdown-menu').classList.remove('open');
+}
+document.addEventListener('click',function(){closeDropdown();});
+
+function openMobileDrawer(){
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeMobileDrawer(){
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function showEventosByType(type){
+  showPage('home');
+  setTimeout(()=>{
+    // activate the correct filter button
+    const btns=document.querySelectorAll('#calendario .filter-bar .f-btn');
+    let targetBtn=null;
+    btns.forEach(b=>{
+      b.classList.remove('on');
+      const map={'Todos':'all','Hyrox':'Hyrox','Hybrid':'Hybrid','Games':'Games Series','Run':'Running / Trail'};
+      // match by text
+      if(b.textContent.trim()==='Hyrox'&&type==='Hyrox'){b.classList.add('on');targetBtn=b;}
+      if(b.textContent.trim()==='Hybrid'&&type==='Hybrid'){b.classList.add('on');targetBtn=b;}
+      if(b.textContent.trim()==='Games'&&type==='Games Series'){b.classList.add('on');targetBtn=b;}
+      if(b.textContent.trim()==='Run'&&type==='Running / Trail'){b.classList.add('on');targetBtn=b;}
+    });
+    buildCal(type);buildList(type,state.estadoFilter||'all');
+    state.filter=type;
+    // scroll to event list
+    const el=document.getElementById('event-list-section');
+    if(el)el.scrollIntoView({behavior:'smooth'});
+  },80);
+}
+
 // ── CALENDAR ──
 const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const DAYS=['D','L','M','X','J','V','S'];
 
+function parseLocalDate(str){
+  // 'YYYY-MM-DD' → local midnight, avoids UTC timezone shift
+  if(!str)return null;
+  const [y,mo,d]=str.split('-').map(Number);
+  return new Date(y,mo-1,d);
+}
+
 function evForDay(d){
   return EVENTS.find(ev=>{
-    const ed=new Date(ev.date);
     if(ev.range) return d>=ev.range.s&&d<=ev.range.e;
+    const ed=parseLocalDate(ev.date);
+    if(!ed)return false;
     return ed.getFullYear()===d.getFullYear()&&ed.getMonth()===d.getMonth()&&ed.getDate()===d.getDate();
   });
 }
+
+function typeClass(type){
+  if(type==='Hyrox')return 'ev-hyrox';
+  if(type==='Hybrid')return 'ev-hybrid';
+  if(type==='Games Series')return 'ev-games';
+  if(type==='Swim')return 'ev-swim';
+  if(type==='Running / Trail')return 'ev-run';
+  return 'ev-hyrox';
+}
+function typeRangeClass(type){return typeClass(type).replace('ev-','ev-range-');}
 
 function buildCal(filter){
   const g=document.getElementById('year-grid');g.innerHTML='';
@@ -874,13 +1458,13 @@ function buildCal(filter){
       if(ev&&(filter==='all'||ev.type===filter)){
         if(ev.range){
           if(date.getTime()===ev.range.s.getTime()){
-            cell.classList.add('event-range-start');
+            cell.classList.add('has-event','event-range-start',typeRangeClass(ev.type));
             cell.innerHTML=d+`<span class="day-tip">${ev.name}</span>`;
             cell.onclick=()=>openEvent(ev.id);
           }else if(date.getTime()===ev.range.e.getTime()){cell.classList.add('event-range-end');}
           else{cell.classList.add('event-range');}
         }else{
-          cell.classList.add('has-event');
+          cell.classList.add('has-event',typeClass(ev.type));
           cell.innerHTML=d+`<span class="day-tip">${ev.name}</span>`;
           cell.onclick=()=>openEvent(ev.id);
         }
@@ -892,19 +1476,37 @@ function buildCal(filter){
 }
 
 // ── EVENT LIST ──
-function buildList(filter){
-  const c=document.getElementById('events-container');
-  const evs=EVENTS.filter(e=>filter==='all'||e.type===filter);
+function getEstado(evId){return (state.estado&&state.estado[evId])||null;}
+function setEstado(evId,val,e){
+  e.stopPropagation();
+  if(!state.estado)state.estado={};
+  if(state.estado[evId]===val)delete state.estado[evId];else state.estado[evId]=val;
+  try{localStorage.setItem('apc2_estado',JSON.stringify(state.estado));}catch(err){}
+  buildList(state.filter,state.estadoFilter||'all');
+  const tipoPage=document.getElementById('page-tipo');
+  if(tipoPage&&tipoPage.classList.contains('active')&&state.tipoType)buildTipoPage(state.tipoType);
+}
+
+function buildList(typeFilter,estadoFilter,containerId){
+  const cid=containerId||'events-container';
+  const c=document.getElementById(cid);if(!c)return;
+  const ef=estadoFilter||'all';
+  const evs=EVENTS.filter(e=>{
+    const typeOk=(typeFilter==='all'||e.type===typeFilter);
+    const estOk=(ef==='all'||getEstado(e.id)===ef);
+    return typeOk&&estOk;
+  });
+  if(!evs.length){c.innerHTML='<div style="padding:32px;opacity:.35;font-family:var(--ff-mono);font-size:11px">Sin eventos</div>';return;}
   c.innerHTML=evs.map(ev=>{
     const avs=USERS.map(u=>{
       const k=`${ev.id}_tickets_${u.id}`;
       const ok=state.checks[k]&&state.checks[k].done;
       return `<div class="av ${ok?'ok':''}" title="${u.name}">${u.init}</div>`;
     }).join('');
-    const interested=state.interest&&state.interest[ev.id]?new Set(state.interest[ev.id]):new Set();
-    const intAvatars=USERS.map(u=>{
-      const on=interested.has(u.id);
-      return `<div class="av-interest ${on?'on':''}" data-ev="${ev.id}" data-u="${u.id}" title="${u.name}" onclick="event.stopPropagation();toggleInterest('${ev.id}','${u.id}',this)">${u.init}</div>`;
+    const est=getEstado(ev.id);
+    const estadoBtns=['in','plan','nope','done'].map(v=>{
+      const cls=est===v?` estado-${v}`:'';
+      return `<button class="estado-btn${cls}" onclick="setEstado('${ev.id}','${v}',event)">${v}</button>`;
     }).join('');
     return `<div class="event-item" onclick="openEvent('${ev.id}')">
       <div class="ev-date"><strong>${ev.displayDate}</strong>${ev.sub}</div>
@@ -913,11 +1515,14 @@ function buildList(filter){
         <div class="ev-meta"><span class="ev-tag">${ev.type}</span><span class="ev-loc">${ev.loc}</span></div>
       </div>
       <div class="ev-right-col">
-        <div class="are-you-in">
-          <span class="ayi-label">¿Vais?</span>
-          <div class="ayi-avatars">${intAvatars}</div>
+        <div class="ev-estado-wrap">
+          <span class="estado-label">Estado</span>
+          <div class="estado-btns">${estadoBtns}</div>
         </div>
-        <div class="ev-avatars" title="Reservas confirmadas">${avs}</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="ev-edit-hover" onclick="event.stopPropagation();openEvModal('${ev.id}')">editar</button>
+          <div class="ev-avatars" title="Reservas confirmadas">${avs}</div>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -934,9 +1539,15 @@ function toggleInterest(evId,userId,btn){
 }
 
 function setFilter(type,btn){
-  document.querySelectorAll('.filter-bar .f-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('#type-filter-bar .f-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');state.filter=type;
-  buildCal(type);buildList(type);
+  buildCal(type);buildList(type,state.estadoFilter||'all');
+}
+
+function setEstadoFilter(val,btn){
+  document.querySelectorAll('#estado-filter-bar .f-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');state.estadoFilter=val;
+  buildList(state.filter,val);
 }
 
 // ── EVENT DETAIL ──
@@ -948,6 +1559,12 @@ function openEvent(id){
   document.getElementById('d-date').textContent=ev.displayDate+' 2026';
   document.getElementById('d-loc').textContent=ev.loc;
   document.getElementById('d-fmt').textContent=ev.fmt;
+  const linkWrap=document.getElementById('d-link-wrap');
+  const linkEl=document.getElementById('d-link');
+  if(ev.link&&linkWrap&&linkEl){
+    linkEl.href=ev.link;linkEl.textContent=ev.link.replace(/^https?:\/\//,'');
+    linkWrap.style.display='block';
+  } else if(linkWrap){linkWrap.style.display='none';}
   document.querySelectorAll('[data-field]').forEach(el=>{
     const k=`${id}_${el.dataset.field}`;
     el.textContent=state.edata[k]||'';
@@ -1018,7 +1635,7 @@ function toggleCheck(evId,block,userId){
   const k=`${evId}_${block}_${userId}`;
   const s=state.checks[k]||{done:false,note:''};
   state.checks[k]={...s,done:!s.done};save();
-  renderChecks(evId,block);buildList(state.filter);
+  renderChecks(evId,block);buildList(state.filter,state.estadoFilter||'all');
 }
 function saveNote(evId,block,userId,val){
   const k=`${evId}_${block}_${userId}`;
@@ -1027,10 +1644,10 @@ function saveNote(evId,block,userId,val){
 
 // ── RESULTS ──
 const HX_USERS=[
-  {id:'manu', name:'Manu', color:'#00B4CC'},
-  {id:'carla',name:'Carla',color:'#E74C3C'},
-  {id:'ester',name:'Ester',color:'#E67E22'},
-  {id:'cande',name:'Cande',color:'#27AE60'},
+  {id:'manu', name:'Manu', color:'#7BA882'},
+  {id:'carla',name:'Carla',color:'#C97B5E'},
+  {id:'ester',name:'Ester',color:'#6E9AB5'},
+  {id:'cande',name:'Cande',color:'#B5A06B'},
 ];
 
 function buildPersonFilters(){
@@ -1118,25 +1735,6 @@ function buildEvolChart(){
   });
 }
 
-function buildRadarChart(){
-  destroyChart('chartRadar');
-  const rSt=['SkiErg','Sled Push','Sled Pull','BBJ','Row','Farmer Carry','S. Lunges','Wall Balls'];
-  const rIdx=rSt.map(s=>HX.stations.indexOf(s));
-  function norm(ci){return rIdx.map(si=>{const t=toSec(HX.times[si][ci]);const all=HX.times[si].map(toSec).filter(Boolean);return Math.round((1-(t/Math.max(...all)))*100);});}
-  const vis=getVisibleCols();
-  const datasets=vis.slice(0,5).map(({c,i})=>({
-    label:`${c.label} ${c.date}`,data:norm(i),
-    borderColor:c.color,backgroundColor:c.color+'18',borderWidth:1.5,pointRadius:3
-  }));
-  chartsInstances['chartRadar']=new Chart(document.getElementById('chartRadar'),{
-    type:'radar',
-    data:{labels:rSt,datasets},
-    options:{responsive:true,
-      scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'#1C1C1C'},pointLabels:{font:{size:9}}}},
-      plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:8,color:'#888'}}}}
-  });
-}
-
 function buildStationChart(){
   destroyChart('chartStation');
   const si=HX.stations.indexOf(stationFilter);if(si<0)return;
@@ -1153,18 +1751,6 @@ function buildStationChart(){
       scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>Math.floor(v/60)+':'+(v%60).toString().padStart(2,'0'),color:'#555550'}},
               x:{grid:{display:false},ticks:{font:{size:9},maxRotation:45,color:'#555550'}}}}
   });
-  // also update the legacy bar chart (chartBars) with same data
-  destroyChart('chartBars');
-  const slSi=HX.stations.indexOf('Sled Push');
-  const allVis=HX.cols.map((c,i)=>({c,i}));
-  const legacyEl=document.getElementById('chartBarsTitle');if(legacyEl)legacyEl.textContent='Sled Push — todos';
-  chartsInstances['chartBars']=new Chart(document.getElementById('chartBars'),{
-    type:'bar',
-    data:{labels:allVis.map(({c})=>`${c.label} ${c.date}`),datasets:[{data:allVis.map(({i})=>toSec(HX.times[slSi][i])),backgroundColor:allVis.map(({c})=>c.color),borderRadius:0}]},
-    options:{responsive:true,plugins:{legend:{display:false}},
-      scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>Math.floor(v/60)+':'+(v%60).toString().padStart(2,'0'),color:'#555550'}},
-              x:{grid:{display:false},ticks:{font:{size:9},maxRotation:45,color:'#555550'}}}}
-  });
 }
 
 function initCharts(){
@@ -1172,14 +1758,153 @@ function initCharts(){
   Chart.defaults.font.family="'DM Sans',sans-serif";
   Chart.defaults.font.weight='300';
   Chart.defaults.color='#555550';
-  buildEvolChart();buildRadarChart();buildStationChart();
+  buildEvolChart();buildStationChart();
 }
 
 function rebuildCharts(){
-  buildEvolChart();buildRadarChart();buildStationChart();
+  buildEvolChart();buildStationChart();
 }
 
-buildCal('all');buildList('all');
+// ── EVENT MODAL (Add / Edit) ──
+let _evModal={id:null,prefillType:null};
+const MONTH_SHORT=['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+
+function openEvModal(evId,prefillType){
+  _evModal={id:evId||null,prefillType:prefillType||null};
+  const ev=evId?EVENTS.find(e=>e.id===evId):null;
+  document.getElementById('ev-modal-title').textContent=ev?'Editar evento':'Añadir evento';
+  const delBtn=document.getElementById('ev-modal-del');
+  delBtn.style.display=(ev&&ev._extra)?'block':'none';
+
+  const typeOpts=['Hyrox','Hybrid','Games Series','Running / Trail','Swim'].map(t=>`<option value="${t}"${(ev?ev.type:prefillType)===t?' selected':''}>${t}</option>`).join('');
+  document.getElementById('ev-modal-body').innerHTML=`
+    <div class="modal-field"><label>Nombre</label>
+      <input id="evm-name" value="${ev?ev.name:''}" placeholder="Nombre del evento..."/></div>
+    <div class="modal-field"><label>Tipo</label>
+      <select id="evm-type">${typeOpts}</select></div>
+    <div class="modal-field"><label>Fecha</label>
+      <input id="evm-date" type="date" value="${ev?ev.date:''}"/></div>
+    <div class="modal-field"><label>Lugar</label>
+      <input id="evm-loc" value="${ev?ev.loc:''}" placeholder="Ciudad, País..."/></div>
+    <div class="modal-field"><label>Subtítulo (día · hora)</label>
+      <input id="evm-sub" value="${ev?ev.sub:''}" placeholder="Domingo · 14:00"/></div>`;
+  document.getElementById('ev-modal').classList.add('open');
+}
+
+function closeEvModal(){document.getElementById('ev-modal').classList.remove('open');}
+
+function saveEvModal(){
+  const name=document.getElementById('evm-name').value.trim();
+  if(!name)return;
+  const type=document.getElementById('evm-type').value;
+  const dateStr=document.getElementById('evm-date').value;
+  const loc=document.getElementById('evm-loc').value.trim();
+  const sub=document.getElementById('evm-sub').value.trim();
+  const d=dateStr?parseLocalDate(dateStr):null;
+  const displayDate=d&&!isNaN(d)?`${d.getDate()} ${MONTH_SHORT[d.getMonth()]}`:dateStr;
+
+  if(_evModal.id){
+    // Edit existing
+    const ev=EVENTS.find(e=>e.id===_evModal.id);
+    if(ev){ev.name=name;ev.type=type;ev.date=dateStr;ev.displayDate=displayDate;ev.loc=loc;ev.sub=sub;ev._extra=true;}
+  } else {
+    // Add new
+    EVENTS.push({id:'ev-'+Date.now(),name,type,date:dateStr,displayDate,sub,loc,fmt:'1 día',range:null,_extra:true});
+  }
+  saveExtraEvents();
+  closeEvModal();
+  buildCal(state.filter);buildList(state.filter,state.estadoFilter||'all');
+  if(state.tipoType&&document.getElementById('page-tipo').classList.contains('active'))buildTipoPage(state.tipoType);
+}
+
+function deleteEvModal(){
+  const ev=EVENTS.find(e=>e.id===_evModal.id);
+  if(!ev||!ev._extra)return;
+  if(!confirm(`¿Eliminar "${ev.name}"?`))return;
+  EVENTS.splice(EVENTS.indexOf(ev),1);
+  saveExtraEvents();
+  closeEvModal();
+  buildCal(state.filter);buildList(state.filter,state.estadoFilter||'all');
+  if(state.tipoType&&document.getElementById('page-tipo').classList.contains('active'))buildTipoPage(state.tipoType);
+}
+
+function saveExtraEvents(){
+  try{const extra=EVENTS.filter(e=>e._extra);localStorage.setItem('apc2_events',JSON.stringify(extra));}catch(e){}
+}
+
+// ── SWIM DATA ──
+const SWIM_DATA=[
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'1000m', race:'Open Water Coruña', date:"Jun'25", time:'18:45'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'2000m', race:'Travesía Ría',      date:"Ago'25", time:'39:20'},
+  {user:'carla',name:'Carla',color:'#C97B5E', dist:'1000m', race:'Open Water Coruña', date:"Jun'25", time:'21:30'},
+  {user:'ester',name:'Ester',color:'#6E9AB5', dist:'1000m', race:'Open Water Coruña', date:"Jun'25", time:'22:10'},
+  {user:'cande',name:'Cande',color:'#B5A06B', dist:'1000m', race:'Open Water Coruña', date:"Jun'25", time:'23:55'},
+];
+const SWIM_DISTS=['1000m','2000m','3000m','4000m'];
+const state_swim={persons:new Set(['manu','carla','ester','cande']),dists:new Set(['1000m','2000m','3000m','4000m'])};
+let chartSwimInstance=null;
+
+function buildSwimPersonFilters(){
+  const el=document.getElementById('swim-person-filters');if(!el)return;
+  el.innerHTML=HX_USERS.map(u=>`
+    <button class="p-btn on" data-p="${u.id}" onclick="toggleSwimPerson('${u.id}',this)">
+      <span class="pdot" style="background:${u.color}"></span>${u.name}
+    </button>`).join('');
+}
+function toggleSwimPerson(id,btn){
+  btn.classList.toggle('on');
+  if(state_swim.persons.has(id))state_swim.persons.delete(id);else state_swim.persons.add(id);
+  buildSwimTable();buildSwimChart();
+}
+function toggleSwimDist(d,btn){
+  btn.classList.toggle('on');
+  if(state_swim.dists.has(d))state_swim.dists.delete(d);else state_swim.dists.add(d);
+  buildSwimTable();buildSwimChart();
+}
+function buildSwimTable(){
+  const wrap=document.getElementById('swim-tbl-wrap');if(!wrap)return;
+  const rows=SWIM_DATA.filter(r=>state_swim.persons.has(r.user)&&state_swim.dists.has(r.dist));
+  if(!rows.length){wrap.innerHTML='<div style="padding:32px;text-align:center;opacity:.35;font-family:var(--ff-mono);font-size:11px">Sin registros</div>';return;}
+  const bestByDist={};
+  SWIM_DISTS.forEach(d=>{const ts=rows.filter(r=>r.dist===d).map(r=>runTimeToSec(r.time)).filter(Boolean);if(ts.length)bestByDist[d]=Math.min(...ts);});
+  const sorted=[...rows].sort((a,b)=>SWIM_DISTS.indexOf(a.dist)-SWIM_DISTS.indexOf(b.dist)||runTimeToSec(a.time)-runTimeToSec(b.time));
+  const trs=sorted.map(r=>{
+    const best=bestByDist[r.dist];const sec=runTimeToSec(r.time);const isBest=sec===best;
+    return`<tr>
+      <td style="text-align:left;padding:10px 12px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:${r.color};display:inline-block"></span>${r.name}</span></td>
+      <td style="font-family:var(--ff-mono);font-size:11px;letter-spacing:.05em">${r.dist}</td>
+      <td style="text-align:left;opacity:.6;font-size:11px">${r.race}</td>
+      <td style="font-family:var(--ff-mono);font-size:11px;opacity:.5">${r.date}</td>
+      <td style="font-family:var(--ff-mono);font-size:12px;font-weight:600;color:${isBest?'var(--green)':'inherit'}">${r.time}${isBest?' ★':''}</td>
+    </tr>`;}).join('');
+  wrap.innerHTML=`<table class="hyrox-tbl" style="min-width:600px"><thead><tr>
+    <th class="station">Atleta</th><th>Dist.</th><th class="station">Prueba</th><th>Fecha</th><th>Tiempo</th>
+  </tr></thead><tbody>${trs}</tbody></table>`;
+}
+function buildSwimChart(){
+  const canvas=document.getElementById('chartSwimTimes');if(!canvas)return;
+  if(chartSwimInstance){chartSwimInstance.destroy();chartSwimInstance=null;}
+  const rows=SWIM_DATA.filter(r=>state_swim.persons.has(r.user)&&state_swim.dists.has(r.dist));
+  if(!rows.length)return;
+  const activeDists=SWIM_DISTS.filter(d=>state_swim.dists.has(d));
+  const titleEl=document.getElementById('swim-chart-title');
+  if(titleEl)titleEl.textContent='Tiempos globales — '+activeDists.join(', ');
+  const datasets=HX_USERS.filter(u=>state_swim.persons.has(u.id)).map(u=>{
+    const pts=activeDists.map(d=>{
+      const matches=rows.filter(r=>r.user===u.id&&r.dist===d);
+      if(!matches.length)return null;
+      return Math.round(Math.min(...matches.map(r=>runTimeToSec(r.time)))/60*10)/10;
+    });
+    return{label:u.name,data:pts,borderColor:u.color,backgroundColor:u.color+'22',borderWidth:1.5,pointBackgroundColor:u.color,pointRadius:4,tension:.3,fill:false,spanGaps:true};
+  });
+  chartSwimInstance=new Chart(canvas,{
+    type:'line',
+    data:{labels:activeDists,datasets},
+    options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#888',font:{size:11,family:"'DM Sans',sans-serif"}}}},
+      scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>v+' min',color:'#555550'}},x:{grid:{display:false},ticks:{color:'#555550'}}}}
+  });
+}
+
 
 // ── DRIVE LINK ──
 function syncDriveLink(url){
@@ -1213,26 +1938,29 @@ function setSportType(type,btn){
   btn.classList.add('on');
   state.sportType=type;
   const isRun=(type==='run');
-  document.getElementById('dashboard-t1').style.display=isRun?'none':'block';
+  const isSwim=(type==='swim');
+  document.getElementById('dashboard-t1').style.display=(!isRun&&!isSwim)?'block':'none';
   document.getElementById('dashboard-run').style.display=isRun?'block':'none';
-  if(!isRun){buildPersonFilters();buildHyroxTable();}
-  else{buildRunPersonFilters();buildRunTable();buildRunChart();}
+  document.getElementById('dashboard-swim').style.display=isSwim?'block':'none';
+  if(!isRun&&!isSwim){buildPersonFilters();buildHyroxTable();rebuildCharts();}
+  else if(isRun){buildRunPersonFilters();buildRunTable();buildRunChart();}
+  else{buildSwimPersonFilters();buildSwimTable();buildSwimChart();}
 }
 
 // ── RUN DATA ──
 const RUN_DATA=[
-  {user:'manu', name:'Manu', color:'#00B4CC', dist:'10k', race:'San Silvestre Coruña', date:"Dic'24", time:'44:22'},
-  {user:'manu', name:'Manu', color:'#00B4CC', dist:'21k', race:'Media Coruña',         date:"Mar'25", time:'1:52:10'},
-  {user:'manu', name:'Manu', color:'#00B4CC', dist:'21k', race:'Media Vigo',           date:"Sep'25", time:'1:48:33'},
-  {user:'manu', name:'Manu', color:'#00B4CC', dist:'42k', race:'Maratón Vigo',         date:"Oct'25", time:'4:01:17'},
-  {user:'carla',name:'Carla',color:'#E74C3C', dist:'5k',  race:'Carrera Solidaria',    date:"Jun'25", time:'26:45'},
-  {user:'carla',name:'Carla',color:'#E74C3C', dist:'10k', race:'San Silvestre Coruña', date:"Dic'24", time:'51:08'},
-  {user:'carla',name:'Carla',color:'#E74C3C', dist:'21k', race:'Media Coruña',         date:"Mar'25", time:'2:09:44'},
-  {user:'ester',name:'Ester',color:'#E67E22', dist:'5k',  race:'5K Lugo',              date:"Abr'25", time:'24:30'},
-  {user:'ester',name:'Ester',color:'#E67E22', dist:'10k', race:'10K Coruña',           date:"Jun'25", time:'52:15'},
-  {user:'cande',name:'Cande',color:'#27AE60', dist:'5k',  race:'5K Lugo',              date:"Abr'25", time:'27:12'},
-  {user:'cande',name:'Cande',color:'#27AE60', dist:'10k', race:'10K Coruña',           date:"Jun'25", time:'56:48'},
-  {user:'cande',name:'Cande',color:'#27AE60', dist:'21k', race:'Trail Xaló',           date:"Abr'26", time:'2:24:05'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'10k', race:'San Silvestre Coruña', date:"Dic'24", time:'44:22'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'21k', race:'Media Coruña',         date:"Mar'25", time:'1:52:10'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'21k', race:'Media Vigo',           date:"Sep'25", time:'1:48:33'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'42k', race:'Maratón Vigo',         date:"Oct'25", time:'4:01:17'},
+  {user:'carla',name:'Carla',color:'#C97B5E', dist:'5k',  race:'Carrera Solidaria',    date:"Jun'25", time:'26:45'},
+  {user:'carla',name:'Carla',color:'#C97B5E', dist:'10k', race:'San Silvestre Coruña', date:"Dic'24", time:'51:08'},
+  {user:'carla',name:'Carla',color:'#C97B5E', dist:'21k', race:'Media Coruña',         date:"Mar'25", time:'2:09:44'},
+  {user:'ester',name:'Ester',color:'#6E9AB5', dist:'5k',  race:'5K Lugo',              date:"Abr'25", time:'24:30'},
+  {user:'ester',name:'Ester',color:'#6E9AB5', dist:'10k', race:'10K Coruña',           date:"Jun'25", time:'52:15'},
+  {user:'cande',name:'Cande',color:'#B5A06B', dist:'5k',  race:'5K Lugo',              date:"Abr'25", time:'27:12'},
+  {user:'cande',name:'Cande',color:'#B5A06B', dist:'10k', race:'10K Coruña',           date:"Jun'25", time:'56:48'},
+  {user:'cande',name:'Cande',color:'#B5A06B', dist:'21k', race:'Trail Xaló',           date:"Abr'26", time:'2:24:05'},
 ];
 
 const state_run={persons:new Set(['manu','carla','ester','cande']),dists:new Set(['5k','10k','21k','42k'])};
@@ -1317,6 +2045,10 @@ function buildRunChart(){
               x:{grid:{display:false},ticks:{color:'#555550'}}}}
   });
 }
+
+// ── INIT ──
+buildCal('all');
+buildList('all','all');
 </script>
 </body>
 </html>
