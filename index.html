@@ -645,7 +645,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
   .hero-kicker{font-size:9px;letter-spacing:.22em}
 
   /* ── CALENDAR ── */
-  #calendario{padding:48px 16px 40px}
+  #calendario{padding:72px 16px 40px}
   .cal-header{flex-direction:column;align-items:flex-start;gap:20px;margin-bottom:36px}
   .cal-header > div:last-child{width:100%;align-items:flex-start}
   .filter-bar{gap:4px;flex-wrap:wrap}
@@ -677,7 +677,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
   .add-ev-btn{font-size:9px;padding:6px 12px}
 
   /* ── EVENT DETAIL ── */
-  .ev-detail-hero{padding:72px 20px 40px}
+  .ev-detail-hero{padding:80px 20px 36px}
   .ev-detail-title{font-size:clamp(28px,10vw,52px)}
   .ev-detail-meta{grid-template-columns:1fr 1fr;gap:16px}
   .tabs-bar{padding:0 16px;gap:0;overflow-x:auto;scrollbar-width:none}
@@ -690,19 +690,21 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
   .back-btn{font-size:9px;margin-bottom:20px}
 
   /* ── TIPO PAGE ── */
-  .tipo-hero{padding:72px 20px 40px}
+  .tipo-hero{padding:80px 20px 36px}
   .tipo-hero-inner{flex-direction:column;gap:24px}
   .tipo-more{max-width:100%;padding:18px 20px}
   .tipo-ev-section{padding:32px 20px}
 
   /* ── RESULTADOS ── */
-  .results-hero{padding:72px 20px 40px}
+  .results-hero{padding:80px 20px 36px}
   .r-filters-row{gap:4px;flex-wrap:wrap}
   .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .charts-row{grid-template-columns:1fr}
   .chart-box.full{grid-column:span 1}
   .chart-box{padding:18px 14px}
   .p-btn{font-size:9px;padding:5px 10px}
+  /* resultados inner padding */
+  #page-resultados > div[style]{padding:32px 16px!important}
 
   /* ── MODAL ── */
   .modal-box{padding:24px 20px;width:96vw}
@@ -1439,7 +1441,8 @@ function typeClass(type){
 }
 function typeRangeClass(type){return typeClass(type).replace('ev-','ev-range-');}
 
-function buildCal(filter){
+function buildCal(filter,estadoFilter){
+  const ef=estadoFilter||state.estadoFilter||'all';
   const g=document.getElementById('year-grid');g.innerHTML='';
   const today=new Date();today.setHours(0,0,0,0);
   for(let m=0;m<12;m++){
@@ -1455,7 +1458,9 @@ function buildCal(filter){
       const cell=document.createElement('div');cell.className='cal-day cur-month';cell.textContent=d;
       if(date.getTime()===today.getTime())cell.classList.add('today');
       const ev=evForDay(date);
-      if(ev&&(filter==='all'||ev.type===filter)){
+      const typeOk=(filter==='all'||!ev||ev.type===filter);
+      const estOk=(ef==='all'||!ev||getEstado(ev.id)===ef);
+      if(ev&&typeOk&&estOk){
         if(ev.range){
           if(date.getTime()===ev.range.s.getTime()){
             cell.classList.add('has-event','event-range-start',typeRangeClass(ev.type));
@@ -1547,6 +1552,7 @@ function setFilter(type,btn){
 function setEstadoFilter(val,btn){
   document.querySelectorAll('#estado-filter-bar .f-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');state.estadoFilter=val;
+  buildCal(state.filter,val);
   buildList(state.filter,val);
 }
 
