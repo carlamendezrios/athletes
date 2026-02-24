@@ -772,14 +772,70 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 
   /* ── RESULTADOS ── */
   .results-hero{padding:80px 20px 36px}
-  .r-filters-row{gap:4px;flex-wrap:wrap}
-  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .charts-row{grid-template-columns:1fr}
+  
+  /* Mejorar visibilidad de filtros */
+  .r-filters-row{gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .p-btn{
+    font-size:11px;
+    padding:10px 16px;
+    letter-spacing:.12em;
+  }
+  .p-btn .pdot{width:10px;height:10px}
+  .f-btn{
+    font-size:11px;
+    padding:10px 16px;
+    letter-spacing:.12em;
+  }
+  
+  /* Mejorar títulos y etiquetas */
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:.18em;
+    margin-bottom:16px;
+  }
+  
+  /* Gráficos más grandes */
+  .charts-row{grid-template-columns:1fr;gap:16px;margin-bottom:16px}
   .chart-box.full{grid-column:span 1}
-  .chart-box{padding:18px 14px}
-  .p-btn{font-size:9px;padding:5px 10px}
-  /* resultados inner padding */
-  #page-resultados > div[style]{padding:32px 16px!important}
+  .chart-box{
+    padding:24px 16px;
+    min-height:320px;
+  }
+  .chart-box h5{
+    font-size:11px;
+    letter-spacing:.16em;
+    margin-bottom:24px;
+    line-height:1.4;
+  }
+  .chart-box canvas{
+    min-height:240px !important;
+  }
+  
+  /* Tablas más legibles */
+  .tbl-wrap{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    margin-top:20px;
+  }
+  .hyrox-tbl{
+    font-size:12px;
+    min-width:100%;
+  }
+  .hyrox-tbl th{
+    font-size:10px;
+    padding:12px 10px;
+  }
+  .hyrox-tbl td{
+    font-size:11px;
+    padding:10px 8px;
+  }
+  .hyrox-tbl td.station{
+    font-size:12px;
+    font-weight:400;
+  }
+  
+  /* Ajustar padding general */
+  #page-resultados > div[style]{padding:40px 20px!important}
 
   /* ── MODAL ── */
   .modal-box{padding:24px 20px;width:96vw}
@@ -1195,9 +1251,9 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
           <button class="f-btn" onclick="setStationFilter('Sled Pull',this)">Sled Pull</button>
           <button class="f-btn" onclick="setStationFilter('SkiErg',this)">SkiErg</button>
           <button class="f-btn" onclick="setStationFilter('Row',this)">Row</button>
-          <button class="f-btn" onclick="setStationFilter('BBJ',this)">Burpee Broad Jump</button>
-          <button class="f-btn" onclick="setStationFilter('Farmer Carry',this)">Farmer Carry</button>
-          <button class="f-btn" onclick="setStationFilter('S. Lunges',this)">Sandbag Lunges</button>
+          <button class="f-btn" onclick="setStationFilter('BBJ',this)">BBJ</button>
+          <button class="f-btn" onclick="setStationFilter('Farmer Carry',this)">Farmer</button>
+          <button class="f-btn" onclick="setStationFilter('S. Lunges',this)">Lunges</button>
           <button class="f-btn" onclick="setStationFilter('Wall Balls',this)">Wall Balls</button>
         </div>
         <div class="charts-row">
@@ -1900,8 +1956,38 @@ function buildEvolChart(){
   chartsInstances['chartEvol']=new Chart(document.getElementById('chartEvol'),{
     type:'line',
     data:{labels:allLabels,datasets:fixedDs},
-    options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#888',font:{size:10,family:"'DM Sans'"},boxWidth:8}}},
-      scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>v+' min',color:'#555550'}},x:{grid:{display:false},ticks:{color:'#555550'}}}}
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{
+          display:true,
+          labels:{
+            color:'#888',
+            font:{size:window.innerWidth <= 768 ? 11 : 10,family:"'DM Sans'"},
+            boxWidth:10,
+            padding:12
+          }
+        }
+      },
+      scales:{
+        y:{
+          grid:{color:'#1C1C1C'},
+          ticks:{
+            callback:v=>v+' min',
+            color:'#555550',
+            font:{size:window.innerWidth <= 768 ? 11 : 10}
+          }
+        },
+        x:{
+          grid:{display:false},
+          ticks:{
+            color:'#555550',
+            font:{size:window.innerWidth <= 768 ? 11 : 10}
+          }
+        }
+      }
+    }
   });
 }
 
@@ -1917,9 +2003,29 @@ function buildStationChart(){
   chartsInstances['chartStation']=new Chart(document.getElementById('chartStation'),{
     type:'bar',
     data:{labels,datasets:[{data:vals,backgroundColor:colors,borderRadius:0}]},
-    options:{responsive:true,plugins:{legend:{display:false}},
-      scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>Math.floor(v/60)+':'+(v%60).toString().padStart(2,'0'),color:'#555550'}},
-              x:{grid:{display:false},ticks:{font:{size:9},maxRotation:45,color:'#555550'}}}}
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        y:{
+          grid:{color:'#1C1C1C'},
+          ticks:{
+            callback:v=>Math.floor(v/60)+':'+(v%60).toString().padStart(2,'0'),
+            color:'#555550',
+            font:{size:window.innerWidth <= 768 ? 11 : 10}
+          }
+        },
+        x:{
+          grid:{display:false},
+          ticks:{
+            font:{size:window.innerWidth <= 768 ? 10 : 9},
+            maxRotation:45,
+            color:'#555550'
+          }
+        }
+      }
+    }
   });
 }
 
@@ -1928,6 +2034,12 @@ function initCharts(){
   Chart.defaults.font.family="'DM Sans',sans-serif";
   Chart.defaults.font.weight='300';
   Chart.defaults.color='#555550';
+  
+  // Aumentar tamaño de fuente en móvil
+  if(window.innerWidth <= 768){
+    Chart.defaults.font.size = 11;
+  }
+  
   buildEvolChart();buildStationChart();
 }
 
@@ -2070,8 +2182,37 @@ function buildSwimChart(){
   chartSwimInstance=new Chart(canvas,{
     type:'line',
     data:{labels:activeDists,datasets},
-    options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#888',font:{size:11,family:"'DM Sans',sans-serif"}}}},
-      scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>v+' min',color:'#555550'}},x:{grid:{display:false},ticks:{color:'#555550'}}}}
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{
+          display:true,
+          labels:{
+            color:'#888',
+            font:{size:window.innerWidth <= 768 ? 11 : 11,family:"'DM Sans',sans-serif"},
+            padding:12
+          }
+        }
+      },
+      scales:{
+        y:{
+          grid:{color:'#1C1C1C'},
+          ticks:{
+            callback:v=>v+' min',
+            color:'#555550',
+            font:{size:window.innerWidth <= 768 ? 11 : 10}
+          }
+        },
+        x:{
+          grid:{display:false},
+          ticks:{
+            color:'#555550',
+            font:{size:window.innerWidth <= 768 ? 11 : 10}
+          }
+        }
+      }
+    }
   });
 }
 
@@ -2210,9 +2351,38 @@ function buildRunChart(){
   chartRunInstance=new Chart(canvas,{
     type:'line',
     data:{labels:activeDists.map(d=>d.toUpperCase()),datasets},
-    options:{responsive:true,plugins:{legend:{display:true,labels:{color:'#888',font:{size:11,family:"'DM Sans',sans-serif"}}}},
-      scales:{y:{grid:{color:'#1C1C1C'},ticks:{callback:v=>v+' min',color:'#555550'},title:{display:true,text:'min',color:'#444'}},
-              x:{grid:{display:false},ticks:{color:'#555550'}}}}
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{
+          display:true,
+          labels:{
+            color:'#888',
+            font:{size:window.innerWidth <= 768 ? 11 : 11,family:"'DM Sans',sans-serif"},
+            padding:12
+          }
+        }
+      },
+      scales:{
+        y:{
+          grid:{color:'#1C1C1C'},
+          ticks:{
+            callback:v=>v+' min',
+            color:'#555550',
+            font:{size:window.innerWidth <= 768 ? 11 : 10}
+          },
+          title:{display:true,text:'min',color:'#444'}
+        },
+        x:{
+          grid:{display:false},
+          ticks:{
+            color:'#555550',
+            font:{size:window.innerWidth <= 768 ? 11 : 10}
+          }
+        }
+      }
+    }
   });
 }
 
@@ -2222,3 +2392,4 @@ buildList('all','all');
 </script>
 </body>
 </html>
+
