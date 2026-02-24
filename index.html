@@ -726,9 +726,10 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
   .filter-bar{gap:4px;flex-wrap:wrap}
   .f-btn{font-size:9px;padding:5px 10px;letter-spacing:.08em}
   
-  /* Calendario compacto - 3 columnas para ver todo el año */
+  /* Calendario compacto - 3 columnas para ver todo el año por trimestres */
   .year-grid{
     grid-template-columns:repeat(3,1fr);
+    grid-auto-flow:row;
     gap:6px;
     background:transparent;
     border:none;
