@@ -289,7 +289,7 @@ b,strong{font-weight:400}
 
 /* ── MOBILE HERO FILTER ─────────────────────────────────────────── */
 #mobile-hero-filter{
-  display:none; /* Hidden by default, shown only on mobile */
+  display:none;
   position:fixed;
   right:16px;
   top:50%;
@@ -698,13 +698,17 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
   .hero-title{font-size:clamp(52px,18vw,96px);letter-spacing:.03em}
   .hero-kicker{font-size:9px;letter-spacing:.22em}
 
-  /* ── MOBILE HERO VIDEO (VERTICAL 1080x1920) ── */
+  /* ── MOBILE HERO VIDEO (1080x1920 vertical) ── */
+  #hero{
+    aspect-ratio:9/16;
+    min-height:100svh;
+  }
   #hero-video{
     object-fit:cover;
     object-position:center;
   }
 
-  /* ── MOBILE HERO FILTER (SHOW ON MOBILE) ── */
+  /* ── SHOW MOBILE HERO FILTER ── */
   #mobile-hero-filter{
     display:flex !important;
   }
@@ -836,11 +840,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 <!-- ═══ HOME ═══ -->
 <div id="page-home" class="page active">
   <section id="hero">
-    <video id="hero-video" autoplay muted loop playsinline>
-      <!-- Desktop video (horizontal) -->
-      <source src="videos/hero.mp4" type="video/mp4" media="(min-width: 769px)">
-      <!-- Mobile video (vertical 1080x1920) -->
-      <source src="videos/hero-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
+    <video id="hero-video" autoplay muted loop playsinline src="videos/hero.mp4">
     </video>
     <div class="hero-overlay"></div>
     <div class="hero-inner"></div>
@@ -853,7 +853,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 
     <!-- MOBILE HERO FILTER -->
     <div id="mobile-hero-filter">
-      <button class="hero-filter-btn" onclick="scrollToEventos()">
+      <button class="hero-filter-btn" onclick="openMobileDrawer()">
         <svg class="hero-filter-icon" viewBox="0 0 24 24">
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
           <line x1="16" y1="2" x2="16" y2="6"/>
@@ -1304,15 +1304,8 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 
 <script>
 // ── MOBILE HERO FILTER FUNCTIONS ──
-function scrollToEventos(){
-  const section = document.getElementById('event-list-section');
-  if(section){
-    section.scrollIntoView({behavior:'smooth', block:'start'});
-    highlightFilterBtn(0);
-  }
-}
-
 function goToResultados(){
+  closeMobileDrawer();
   showPage('resultados');
   window.scrollTo({top:0, behavior:'smooth'});
   setTimeout(initCharts, 80);
@@ -1320,6 +1313,7 @@ function goToResultados(){
 }
 
 function scrollToCalendar(){
+  closeMobileDrawer();
   const section = document.getElementById('calendario');
   if(section){
     section.scrollIntoView({behavior:'smooth', block:'start'});
@@ -1338,7 +1332,7 @@ function highlightFilterBtn(index){
   });
 }
 
-// ── ORIGINAL CODE STARTS HERE ──
+// ── REST OF CODE ──
 const USERS=[
   {id:'ester',name:'Esterchu',init:'E', color:'#C97B5E'},
   {id:'meri', name:'Meri',    init:'M', color:'#9B7BB5'},
