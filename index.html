@@ -287,6 +287,60 @@ b,strong{font-weight:400}
 }
 @keyframes nudge{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
 
+/* ── MOBILE HERO FILTER ─────────────────────────────────────────── */
+#mobile-hero-filter{
+  display:none; /* Hidden by default, shown only on mobile */
+  position:fixed;
+  right:16px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:150;
+  flex-direction:column;
+  gap:14px;
+}
+
+.hero-filter-btn{
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  border:1.5px solid rgba(244,243,239,.12);
+  background:rgba(10,10,10,.88);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  cursor:pointer;
+  transition:all .3s cubic-bezier(.16,1,.3,1);
+  font-size:7.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:rgba(244,243,239,.45);
+  font-weight:300;
+  box-shadow:0 4px 16px rgba(0,0,0,.5);
+}
+
+.hero-filter-btn:active{
+  transform:scale(0.92);
+}
+
+.hero-filter-btn.active{
+  border-color:var(--aqua);
+  background:rgba(0,180,204,.12);
+  color:var(--aqua);
+  box-shadow:0 4px 28px rgba(0,180,204,.4);
+}
+
+.hero-filter-icon{
+  width:22px;
+  height:22px;
+  stroke:currentColor;
+  stroke-width:1.5;
+  fill:none;
+}
+
 /* ── COMMON SECTION ELEMENTS ──────────────────────────────────── */
 .eyebrow{
   font-size:10px;letter-spacing:.22em;text-transform:uppercase;
@@ -644,6 +698,17 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
   .hero-title{font-size:clamp(52px,18vw,96px);letter-spacing:.03em}
   .hero-kicker{font-size:9px;letter-spacing:.22em}
 
+  /* ── MOBILE HERO VIDEO (VERTICAL 1080x1920) ── */
+  #hero-video{
+    object-fit:cover;
+    object-position:center;
+  }
+
+  /* ── MOBILE HERO FILTER (SHOW ON MOBILE) ── */
+  #mobile-hero-filter{
+    display:flex !important;
+  }
+
   /* ── CALENDAR ── */
   #calendario{padding:72px 16px 40px}
   .cal-header{flex-direction:column;align-items:flex-start;gap:20px;margin-bottom:36px}
@@ -722,6 +787,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 @media(min-width:769px){
   #nav-hamburger{display:none}
   #mobile-drawer{display:none!important}
+  #mobile-hero-filter{display:none!important}
 }
 </style>
 </head>
@@ -770,7 +836,11 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 <!-- ═══ HOME ═══ -->
 <div id="page-home" class="page active">
   <section id="hero">
-    <video id="hero-video" autoplay muted loop playsinline src="videos/hero.mp4">
+    <video id="hero-video" autoplay muted loop playsinline>
+      <!-- Desktop video (horizontal) -->
+      <source src="videos/hero.mp4" type="video/mp4" media="(min-width: 769px)">
+      <!-- Mobile video (vertical 1080x1920) -->
+      <source src="videos/hero-mobile.mp4" type="video/mp4" media="(max-width: 768px)">
     </video>
     <div class="hero-overlay"></div>
     <div class="hero-inner"></div>
@@ -779,6 +849,39 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
         <path d="M19 9l-7 7-7-7"/>
       </svg>
       scroll
+    </div>
+
+    <!-- MOBILE HERO FILTER -->
+    <div id="mobile-hero-filter">
+      <button class="hero-filter-btn" onclick="scrollToEventos()">
+        <svg class="hero-filter-icon" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span>Eventos</span>
+      </button>
+
+      <button class="hero-filter-btn" onclick="goToResultados()">
+        <svg class="hero-filter-icon" viewBox="0 0 24 24">
+          <line x1="12" y1="20" x2="12" y2="10"/>
+          <line x1="18" y1="20" x2="18" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="16"/>
+        </svg>
+        <span>Resultados</span>
+      </button>
+
+      <button class="hero-filter-btn" onclick="scrollToCalendar()">
+        <svg class="hero-filter-icon" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+          <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
+        </svg>
+        <span>Calendario</span>
+      </button>
     </div>
   </section>
 
@@ -1200,6 +1303,42 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 </footer>
 
 <script>
+// ── MOBILE HERO FILTER FUNCTIONS ──
+function scrollToEventos(){
+  const section = document.getElementById('event-list-section');
+  if(section){
+    section.scrollIntoView({behavior:'smooth', block:'start'});
+    highlightFilterBtn(0);
+  }
+}
+
+function goToResultados(){
+  showPage('resultados');
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(initCharts, 80);
+  highlightFilterBtn(1);
+}
+
+function scrollToCalendar(){
+  const section = document.getElementById('calendario');
+  if(section){
+    section.scrollIntoView({behavior:'smooth', block:'start'});
+    highlightFilterBtn(2);
+  }
+}
+
+function highlightFilterBtn(index){
+  const btns = document.querySelectorAll('.hero-filter-btn');
+  btns.forEach((btn, i) => {
+    btn.classList.remove('active');
+    if(i === index){
+      btn.classList.add('active');
+      setTimeout(() => btn.classList.remove('active'), 800);
+    }
+  });
+}
+
+// ── ORIGINAL CODE STARTS HERE ──
 const USERS=[
   {id:'ester',name:'Esterchu',init:'E', color:'#C97B5E'},
   {id:'meri', name:'Meri',    init:'M', color:'#9B7BB5'},
