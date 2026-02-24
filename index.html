@@ -871,7 +871,8 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 }
 
 @media(max-width:480px){
-  .year-grid{grid-template-columns:repeat(2,1fr)}
+  /* Mantener 3 columnas para mostrar trimestres completos */
+  .year-grid{grid-template-columns:repeat(3,1fr) !important}
   .ev-detail-meta{grid-template-columns:1fr}
   .month-block{padding:6px 4px 8px}
   .month-name{font-size:8px}
