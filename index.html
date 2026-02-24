@@ -673,6 +673,12 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
     transition:opacity .25s,transform .25s;
   }
   #mobile-drawer.open{opacity:1;pointer-events:auto;transform:translateX(0)}
+  #mob-full-menu{
+    display:flex;flex-direction:column;width:100%;
+  }
+  #mob-events-only{
+    display:flex;flex-direction:column;width:100%;
+  }
   .mob-nav-item{
     font-size:28px;letter-spacing:.06em;text-transform:uppercase;
     color:rgba(244,243,239,.45);font-weight:300;padding:12px 0;
@@ -824,16 +830,30 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 <!-- ═══ MOBILE DRAWER ═══ -->
 <div id="mobile-drawer">
   <button id="mob-close" onclick="closeMobileDrawer()">✕</button>
-  <button class="mob-nav-item" onclick="closeMobileDrawer();goHome()">Inicio</button>
-  <button class="mob-nav-item" onclick="closeMobileDrawer();goHome();setTimeout(()=>document.getElementById('calendario').scrollIntoView({behavior:'smooth'}),80)">Calendario</button>
-  <button class="mob-nav-item" onclick="closeMobileDrawer();showPage('resultados')">Resultados</button>
-  <div class="mob-nav-section">
-    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Eventos</div>
-    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Hyrox')">Hyrox</button>
-    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Hybrid')">Hybrid</button>
-    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Games Series')">Games</button>
-    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Running / Trail')">Run</button>
-    <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Swim')">Swim</button>
+  
+  <!-- Full menu (shown by hamburger) -->
+  <div id="mob-full-menu">
+    <button class="mob-nav-item" onclick="closeMobileDrawer();goHome()">Inicio</button>
+    <button class="mob-nav-item" onclick="closeMobileDrawer();goHome();setTimeout(()=>document.getElementById('calendario').scrollIntoView({behavior:'smooth'}),80)">Calendario</button>
+    <button class="mob-nav-item" onclick="closeMobileDrawer();showPage('resultados')">Resultados</button>
+    <div class="mob-nav-section">
+      <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Eventos</div>
+      <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Hyrox')">Hyrox</button>
+      <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Hybrid')">Hybrid</button>
+      <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Games Series')">Games</button>
+      <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Running / Trail')">Run</button>
+      <button class="mob-nav-sub" onclick="closeMobileDrawer();showTipoPage('Swim')">Swim</button>
+    </div>
+  </div>
+
+  <!-- Events only menu (shown by hero filter) -->
+  <div id="mob-events-only" style="display:none">
+    <div style="font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px">Eventos</div>
+    <button class="mob-nav-item" onclick="closeMobileDrawer();showTipoPage('Hyrox')">Hyrox</button>
+    <button class="mob-nav-item" onclick="closeMobileDrawer();showTipoPage('Hybrid')">Hybrid</button>
+    <button class="mob-nav-item" onclick="closeMobileDrawer();showTipoPage('Games Series')">Games</button>
+    <button class="mob-nav-item" onclick="closeMobileDrawer();showTipoPage('Running / Trail')">Run</button>
+    <button class="mob-nav-item" onclick="closeMobileDrawer();showTipoPage('Swim')">Swim</button>
   </div>
 </div>
 
@@ -853,7 +873,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 
     <!-- MOBILE HERO FILTER -->
     <div id="mobile-hero-filter">
-      <button class="hero-filter-btn" onclick="openMobileDrawer()">
+      <button class="hero-filter-btn" onclick="openEventsDrawer()">
         <svg class="hero-filter-icon" viewBox="0 0 24 24">
           <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
           <line x1="16" y1="2" x2="16" y2="6"/>
@@ -1304,6 +1324,14 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
 
 <script>
 // ── MOBILE HERO FILTER FUNCTIONS ──
+function openEventsDrawer(){
+  document.getElementById('mob-full-menu').style.display = 'none';
+  document.getElementById('mob-events-only').style.display = 'block';
+  document.getElementById('mobile-drawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  highlightFilterBtn(0);
+}
+
 function goToResultados(){
   closeMobileDrawer();
   showPage('resultados');
@@ -1514,6 +1542,8 @@ function closeDropdown(){
 document.addEventListener('click',function(){closeDropdown();});
 
 function openMobileDrawer(){
+  document.getElementById('mob-full-menu').style.display = 'flex';
+  document.getElementById('mob-events-only').style.display = 'none';
   document.getElementById('mobile-drawer').classList.add('open');
   document.body.style.overflow='hidden';
 }
