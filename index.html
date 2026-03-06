@@ -1588,6 +1588,47 @@ function listenToFirebaseChanges() {
       console.log('✅ Tipo links actualizados desde Firebase');
     }
   });
+
+  // Escuchar eventos personalizados
+  database.ref('customEvents').on('value', (snapshot) => {
+    if (isSyncing) return;
+    const data = snapshot.val();
+    if (data && Array.isArray(data)) {
+      isSyncing = true;
+      
+      // Remover eventos extra antiguos del array EVENTS
+      for (let i = EVENTS.length - 1; i >= 0; i--) {
+        if (EVENTS[i]._extra) {
+          EVENTS.splice(i, 1);
+        }
+      }
+      
+      // Agregar nuevos eventos personalizados
+      data.forEach(ev => {
+        if (!EVENTS.find(e => e.id === ev.id)) {
+          // Convertir fechas de range si existen
+          if (ev.range && ev.range.s) {
+            ev.range = {
+              s: new Date(ev.range.s),
+              e: new Date(ev.range.e)
+            };
+          }
+          EVENTS.push(ev);
+        }
+      });
+      
+      // Guardar en localStorage
+      localStorage.setItem('apc2_events', JSON.stringify(data));
+      
+      // Actualizar UI
+      buildCal(state.filter, state.estadoFilter);
+      buildList(state.filter, state.estadoFilter || 'all');
+      if (state.tipoType) buildTipoPage(state.tipoType);
+      
+      isSyncing = false;
+      console.log('✅ Eventos personalizados actualizados desde Firebase');
+    }
+  });
 }
 
 // Migrar datos de localStorage a Firebase (solo primera vez)
@@ -1617,6 +1658,13 @@ async function migrateLocalStorageToFirebase() {
     if (localTipoLinks) {
       await database.ref('tipoLinks').set(JSON.parse(localTipoLinks));
       console.log('✅ Tipo links migrados');
+    }
+    
+    // Migrar eventos personalizados
+    const localCustomEvents = localStorage.getItem('apc2_events');
+    if (localCustomEvents) {
+      await database.ref('customEvents').set(JSON.parse(localCustomEvents));
+      console.log('✅ Eventos personalizados migrados');
     }
     
     console.log('🎉 Migración completada');
@@ -2400,7 +2448,18 @@ function deleteEvModal(){
 }
 
 function saveExtraEvents(){
-  try{const extra=EVENTS.filter(e=>e._extra);localStorage.setItem('apc2_events',JSON.stringify(extra));}catch(e){}
+  try{
+    const extra=EVENTS.filter(e=>e._extra);
+    localStorage.setItem('apc2_events',JSON.stringify(extra));
+    // Sincronizar con Firebase
+    if (!isSyncing) {
+      database.ref('customEvents').set(extra).catch(err => {
+        console.error('Error guardando eventos personalizados:', err);
+      });
+    }
+  }catch(e){
+    console.error('Error saving extra events:', e);
+  }
 }
 
 // ── SWIM DATA ──
