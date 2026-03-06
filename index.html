@@ -1809,16 +1809,16 @@ const EVENTS=[
 const HX={
   stations:['Run 1','Run 2','Run 3','Run 4','Run 5','Run 6','Run 7','Run 8','SkiErg','Sled Push','Sled Pull','BBJ','Row','Farmer Carry','S. Lunges','Wall Balls'],
   cols:[
-    {label:'Manu',date:"Oct'24",mod:'single',user:'manu',color:'#7BA882'},
-    {label:'Manu',date:"Feb'25",mod:'single',user:'manu',color:'#7BA882'},
-    {label:'Manu',date:"Mar'25",mod:'single',user:'manu',color:'#7BA882'},
-    {label:'Manu',date:"Nov'25",mod:'single',user:'manu',color:'#7BA882'},
-    {label:'Manu',date:"Sep'25",mod:'dobles',user:'manu',color:'#9B7BB5'},
-    {label:'Carla',date:"Oct'24",mod:'dobles',user:'carla',color:'#C97B5E'},
-    {label:'Carla',date:"Sep'25",mod:'dobles',user:'carla',color:'#C97B5E'},
-    {label:'Ester',date:"Oct'24",mod:'dobles',user:'ester',color:'#6E9AB5'},
-    {label:'Ester',date:"Sep'25",mod:'dobles',user:'ester',color:'#6E9AB5'},
-    {label:'Cande',date:"Oct'24",mod:'dobles',user:'cande',color:'#B5A06B'},
+    {label:'Manu',date:"2024-10-15",mod:'single',user:'manu',color:'#7BA882'},
+    {label:'Manu',date:"2025-02-20",mod:'single',user:'manu',color:'#7BA882'},
+    {label:'Manu',date:"2025-03-10",mod:'single',user:'manu',color:'#7BA882'},
+    {label:'Manu',date:"2025-11-05",mod:'single',user:'manu',color:'#7BA882'},
+    {label:'Manu',date:"2025-09-12",mod:'dobles',user:'manu',color:'#9B7BB5'},
+    {label:'Carla',date:"2024-10-15",mod:'dobles',user:'carla',color:'#C97B5E'},
+    {label:'Carla',date:"2025-09-12",mod:'dobles',user:'carla',color:'#C97B5E'},
+    {label:'Ester',date:"2024-10-15",mod:'dobles',user:'ester',color:'#6E9AB5'},
+    {label:'Ester',date:"2025-09-12",mod:'dobles',user:'ester',color:'#6E9AB5'},
+    {label:'Cande',date:"2024-10-15",mod:'dobles',user:'cande',color:'#B5A06B'},
   ],
   times:[
     ['5:15','4:49','4:29','4:14','4:07','5:04','5:00','6:49','5:35','6:37'],
@@ -2308,7 +2308,7 @@ function buildHyroxTable(){
   const hdr=vis.map(({c})=>`<th><div class="col-header">
     <span class="col-dot" style="background:${c.color}"></span>
     <span>${c.label}</span>
-    <span style="opacity:.5;font-size:9px">${c.date}</span>
+    <span style="opacity:.5;font-size:9px">${formatFechaLegible(c.date)}</span>
     <span class="badge-mod badge-${c.mod}">${c.mod}</span>
   </div></th>`).join('');
   const rows=HX.stations.map((st,si)=>{
@@ -2361,7 +2361,7 @@ function buildEvolChart(){
   if(titleEl)titleEl.textContent='Evolución tiempo total — '+[...new Set(vis.map(({c})=>c.label))].join(', ');
   chartsInstances['chartEvol']=new Chart(document.getElementById('chartEvol'),{
     type:'line',
-    data:{labels:allLabels,datasets:fixedDs},
+    data:{labels:allLabels.map(formatFechaLegible),datasets:fixedDs},
     options:{
       responsive:true,
       maintainAspectRatio:true,
@@ -2404,7 +2404,7 @@ function buildStationChart(){
   const vis=getVisibleCols();
   const el=document.getElementById('chartStationTitle');
   if(el)el.textContent=stationFilter+' — todos los registros';
-  const labels=vis.map(({c})=>`${c.label} ${c.date}`);
+  const labels=vis.map(({c})=>`${c.label} ${formatFechaLegible(c.date)}`);
   const vals=vis.map(({i})=>toSec(HX.times[si][i]));
   const colors=vis.map(({c})=>c.color);
   chartsInstances['chartStation']=new Chart(document.getElementById('chartStation'),{
@@ -2535,11 +2535,11 @@ function saveExtraEvents(){
 
 // ── SWIM DATA ──
 const SWIM_DATA=[
-  {user:'manu', name:'Manu', color:'#7BA882', dist:'1000m', race:'Open Water Coruña', date:"Jun'25", time:'18:45'},
-  {user:'manu', name:'Manu', color:'#7BA882', dist:'2000m', race:'Travesía Ría',      date:"Ago'25", time:'39:20'},
-  {user:'carla',name:'Carla',color:'#C97B5E', dist:'1000m', race:'Open Water Coruña', date:"Jun'25", time:'21:30'},
-  {user:'ester',name:'Ester',color:'#6E9AB5', dist:'1000m', race:'Open Water Coruña', date:"Jun'25", time:'22:10'},
-  {user:'cande',name:'Cande',color:'#B5A06B', dist:'1000m', race:'Open Water Coruña', date:"Jun'25", time:'23:55'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'1000m', race:'Open Water Coruña', date:"2025-06-15", time:'18:45'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'2000m', race:'Travesía Ría',      date:"2025-08-20", time:'39:20'},
+  {user:'carla',name:'Carla',color:'#C97B5E', dist:'1000m', race:'Open Water Coruña', date:"2025-06-15", time:'21:30'},
+  {user:'ester',name:'Ester',color:'#6E9AB5', dist:'1000m', race:'Open Water Coruña', date:"2025-06-15", time:'22:10'},
+  {user:'cande',name:'Cande',color:'#B5A06B', dist:'1000m', race:'Open Water Coruña', date:"2025-06-15", time:'23:55'},
 ];
 const SWIM_DISTS=['1000m','2000m','3000m','4000m'];
 const state_swim={persons:new Set(['manu','carla','ester','cande']),dists:new Set(['1000m','2000m','3000m','4000m'])};
@@ -2575,7 +2575,7 @@ function buildSwimTable(){
       <td style="text-align:left;padding:10px 12px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:${r.color};display:inline-block"></span>${r.name}</span></td>
       <td style="font-family:var(--ff-mono);font-size:11px;letter-spacing:.05em">${r.dist}</td>
       <td style="text-align:left;opacity:.6;font-size:11px">${r.race}</td>
-      <td style="font-family:var(--ff-mono);font-size:11px;opacity:.5">${r.date}</td>
+      <td style="font-family:var(--ff-mono);font-size:11px;opacity:.5">${formatFechaLegible(r.date)}</td>
       <td style="font-family:var(--ff-mono);font-size:12px;font-weight:600;color:${isBest?'var(--green)':'inherit'}">${r.time}${isBest?' ★':''}</td>
     </tr>`;}).join('');
   wrap.innerHTML=`<table class="hyrox-tbl" style="min-width:600px"><thead><tr>
@@ -2680,18 +2680,18 @@ function setSportType(type,btn){
 
 // ── RUN DATA ──
 const RUN_DATA=[
-  {user:'manu', name:'Manu', color:'#7BA882', dist:'10k', race:'San Silvestre Coruña', date:"Dic'24", time:'44:22'},
-  {user:'manu', name:'Manu', color:'#7BA882', dist:'21k', race:'Media Coruña',         date:"Mar'25", time:'1:52:10'},
-  {user:'manu', name:'Manu', color:'#7BA882', dist:'21k', race:'Media Vigo',           date:"Sep'25", time:'1:48:33'},
-  {user:'manu', name:'Manu', color:'#7BA882', dist:'42k', race:'Maratón Vigo',         date:"Oct'25", time:'4:01:17'},
-  {user:'carla',name:'Carla',color:'#C97B5E', dist:'5k',  race:'Carrera Solidaria',    date:"Jun'25", time:'26:45'},
-  {user:'carla',name:'Carla',color:'#C97B5E', dist:'10k', race:'San Silvestre Coruña', date:"Dic'24", time:'51:08'},
-  {user:'carla',name:'Carla',color:'#C97B5E', dist:'21k', race:'Media Coruña',         date:"Mar'25", time:'2:09:44'},
-  {user:'ester',name:'Ester',color:'#6E9AB5', dist:'5k',  race:'5K Lugo',              date:"Abr'25", time:'24:30'},
-  {user:'ester',name:'Ester',color:'#6E9AB5', dist:'10k', race:'10K Coruña',           date:"Jun'25", time:'52:15'},
-  {user:'cande',name:'Cande',color:'#B5A06B', dist:'5k',  race:'5K Lugo',              date:"Abr'25", time:'27:12'},
-  {user:'cande',name:'Cande',color:'#B5A06B', dist:'10k', race:'10K Coruña',           date:"Jun'25", time:'56:48'},
-  {user:'cande',name:'Cande',color:'#B5A06B', dist:'21k', race:'Trail Xaló',           date:"Abr'26", time:'2:24:05'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'10k', race:'San Silvestre Coruña', date:"2024-12-31", time:'44:22'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'21k', race:'Media Coruña',         date:"2025-03-15", time:'1:52:10'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'21k', race:'Media Vigo',           date:"2025-09-20", time:'1:48:33'},
+  {user:'manu', name:'Manu', color:'#7BA882', dist:'42k', race:'Maratón Vigo',         date:"2025-10-12", time:'4:01:17'},
+  {user:'carla',name:'Carla',color:'#C97B5E', dist:'5k',  race:'Carrera Solidaria',    date:"2025-06-10", time:'26:45'},
+  {user:'carla',name:'Carla',color:'#C97B5E', dist:'10k', race:'San Silvestre Coruña', date:"2024-12-31", time:'51:08'},
+  {user:'carla',name:'Carla',color:'#C97B5E', dist:'21k', race:'Media Coruña',         date:"2025-03-15", time:'2:09:44'},
+  {user:'ester',name:'Ester',color:'#6E9AB5', dist:'5k',  race:'5K Lugo',              date:"2025-04-12", time:'24:30'},
+  {user:'ester',name:'Ester',color:'#6E9AB5', dist:'10k', race:'10K Coruña',           date:"2025-06-15", time:'52:15'},
+  {user:'cande',name:'Cande',color:'#B5A06B', dist:'5k',  race:'5K Lugo',              date:"2025-04-12", time:'27:12'},
+  {user:'cande',name:'Cande',color:'#B5A06B', dist:'10k', race:'10K Coruña',           date:"2025-06-15", time:'56:48'},
+  {user:'cande',name:'Cande',color:'#B5A06B', dist:'21k', race:'Trail Xaló',           date:"2026-04-25", time:'2:24:05'},
 ];
 
 const state_run={persons:new Set(['manu','carla','ester','cande']),dists:new Set(['5k','10k','21k','42k'])};
@@ -2743,7 +2743,7 @@ function buildRunTable(){
       <td style="text-align:left;padding:10px 12px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:${r.color};display:inline-block"></span>${r.name}</span></td>
       <td style="font-family:var(--ff-mono);font-size:11px;letter-spacing:.05em">${r.dist.toUpperCase()}</td>
       <td style="text-align:left;opacity:.6;font-size:11px">${r.race}</td>
-      <td style="font-family:var(--ff-mono);font-size:11px;opacity:.5">${r.date}</td>
+      <td style="font-family:var(--ff-mono);font-size:11px;opacity:.5">${formatFechaLegible(r.date)}</td>
       <td style="font-family:var(--ff-mono);font-size:12px;font-weight:600;color:${isBest?'var(--green)':'inherit'}">${r.time}${isBest?' ★':''}</td>
     </tr>`;}).join('');
   wrap.innerHTML=`<table class="hyrox-tbl" style="min-width:600px"><thead><tr>
@@ -2810,6 +2810,16 @@ function buildRunChart(){
 // ══════════════════════════════════════════════════════════════
 // ── EXCEL IMPORT/EXPORT ───────────────────────────────────────
 // ══════════════════════════════════════════════════════════════
+
+// Formatear fecha YYYY-MM-DD a formato legible (ej: "Mar'26")
+function formatFechaLegible(fechaISO) {
+  if (!fechaISO) return '';
+  const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const d = new Date(fechaISO + 'T00:00:00'); // Evitar timezone issues
+  const month = months[d.getMonth()];
+  const year = d.getFullYear().toString().slice(-2);
+  return `${month}'${year}`;
+}
 
 // Importar Excel con resultados
 async function importarExcel(event) {
@@ -2945,7 +2955,7 @@ function descargarPlantilla() {
     const hyroxTemplate = [
       {
         'Atleta': 'Manu',
-        'Fecha': "Mar'26",
+        'Fecha': '2026-03-15',
         'Modalidad': 'single',
         'Run 1': '5:15',
         'SkiErg': '4:31',
@@ -2972,7 +2982,7 @@ function descargarPlantilla() {
     const runTemplate = [
       {
         'Atleta': 'Manu',
-        'Fecha': "Mar'26",
+        'Fecha': '2026-03-15',
         'Carrera': 'Media Maratón Coruña',
         'Distancia': '21k',
         'Tiempo': '1:52:10'
@@ -2985,7 +2995,7 @@ function descargarPlantilla() {
     const swimTemplate = [
       {
         'Atleta': 'Manu',
-        'Fecha': "Jun'26",
+        'Fecha': '2026-06-15',
         'Prueba': 'Open Water Coruña',
         'Distancia': '1000m',
         'Tiempo': '18:45'
