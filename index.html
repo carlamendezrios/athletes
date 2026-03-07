@@ -622,6 +622,7 @@ b,strong{font-weight:400}
   font-family:var(--ff-mono);font-size:9px;letter-spacing:.18em;
   text-transform:uppercase;color:var(--muted);margin-bottom:20px;
 }
+.chart-wrapper{position:relative;width:100%;height:420px}
 
 .tbl-wrap{overflow-x:auto;border:1px solid var(--border)}
 .hyrox-tbl{border-collapse:collapse;font-family:var(--ff-mono);font-size:11px;min-width:900px;width:100%}
@@ -897,6 +898,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
     margin-bottom:16px;
     line-height:1.3;
   }
+  .chart-wrapper{height:260px}
   
   /* Tablas optimizadas */
   .tbl-wrap{
@@ -1399,7 +1401,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <div style="margin-top:40px;margin-bottom:1px" class="charts-row">
         <div class="chart-box full">
           <h5 id="chartEvolTitle">Evolución tiempo total</h5>
-          <canvas id="chartEvol" style="max-width:100%;height:160px"></canvas>
+          <div class="chart-wrapper"><canvas id="chartEvol"></canvas></div>
         </div>
       </div>
 
@@ -1419,7 +1421,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
         <div class="charts-row">
           <div class="chart-box full">
             <h5 id="chartStationTitle">Sled Push — todos los registros</h5>
-            <canvas id="chartStation" style="max-width:100%;height:160px"></canvas>
+            <div class="chart-wrapper"><canvas id="chartStation"></canvas></div>
           </div>
         </div>
       </div>
@@ -1446,7 +1448,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <div style="margin-top:40px" class="charts-row">
         <div class="chart-box full">
           <h5 id="run-chart-title">Tiempos globales — todas las distancias</h5>
-          <canvas id="chartRunTimes" style="max-width:100%;height:160px"></canvas>
+          <div class="chart-wrapper"><canvas id="chartRunTimes"></canvas></div>
         </div>
       </div>
 
@@ -1470,7 +1472,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <div style="margin-top:40px" class="charts-row">
         <div class="chart-box full">
           <h5 id="swim-chart-title">Tiempos globales — todas las distancias</h5>
-          <canvas id="chartSwimTimes" style="max-width:100%;height:160px"></canvas>
+          <div class="chart-wrapper"><canvas id="chartSwimTimes"></canvas></div>
         </div>
       </div>
 
