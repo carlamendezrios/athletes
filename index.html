@@ -1374,6 +1374,15 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <button class="f-btn" onclick="setSportType('swim',this)">Swim</button>
     </div>
 
+    <!-- Filtro por año -->
+    <div class="eyebrow" style="margin-top:28px;margin-bottom:12px">Filtrar por año</div>
+    <div class="r-filters-row" id="year-filters">
+      <button class="f-btn on" onclick="setYearFilter('all',this)">Todos</button>
+      <button class="f-btn" onclick="setYearFilter('2024',this)">2024</button>
+      <button class="f-btn" onclick="setYearFilter('2025',this)">2025</button>
+      <button class="f-btn" onclick="setYearFilter('2026',this)">2026</button>
+    </div>
+
     <!-- Dashboard Tipo 1: Hyrox / Hybrid / Games -->
     <div id="dashboard-t1">
       <div class="eyebrow" style="margin-top:32px;margin-bottom:12px">Filtrar por persona</div>
@@ -1390,7 +1399,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <div style="margin-top:40px;margin-bottom:1px" class="charts-row">
         <div class="chart-box full">
           <h5 id="chartEvolTitle">Evolución tiempo total</h5>
-          <canvas id="chartEvol" height="70"></canvas>
+          <canvas id="chartEvol" style="max-width:100%;height:160px"></canvas>
         </div>
       </div>
 
@@ -1410,7 +1419,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
         <div class="charts-row">
           <div class="chart-box full">
             <h5 id="chartStationTitle">Sled Push — todos los registros</h5>
-            <canvas id="chartStation" height="65"></canvas>
+            <canvas id="chartStation" style="max-width:100%;height:160px"></canvas>
           </div>
         </div>
       </div>
@@ -1437,7 +1446,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <div style="margin-top:40px" class="charts-row">
         <div class="chart-box full">
           <h5 id="run-chart-title">Tiempos globales — todas las distancias</h5>
-          <canvas id="chartRunTimes" height="70"></canvas>
+          <canvas id="chartRunTimes" style="max-width:100%;height:160px"></canvas>
         </div>
       </div>
 
@@ -1461,7 +1470,7 @@ footer small{font-family:var(--ff-mono);font-size:9px;color:var(--muted);letter-
       <div style="margin-top:40px" class="charts-row">
         <div class="chart-box full">
           <h5 id="swim-chart-title">Tiempos globales — todas las distancias</h5>
-          <canvas id="chartSwimTimes" height="70"></canvas>
+          <canvas id="chartSwimTimes" style="max-width:100%;height:160px"></canvas>
         </div>
       </div>
 
@@ -1843,7 +1852,7 @@ const HX={
 // ── STATE ──
 let state={filter:'all',event:null,checks:{},edata:{},
   persons:new Set(['manu','carla','ester','cande']),modFilter:'all',sportType:'hyrox',
-  estado:{},tipoType:null,tipoLinks:{},estadoFilter:'all'};
+  estado:{},tipoType:null,tipoLinks:{},estadoFilter:'all',yearFilter:'all'};
 
 // ── TIPO PAGES ──
 const TIPO_LABELS={'Hyrox':'Hyrox','Hybrid':'Hybrid','Games Series':'Games','Running / Trail':'Run','Swim':'Swim'};
@@ -2300,11 +2309,21 @@ function setModFilter(f,btn){
   btn.classList.add('on');state.modFilter=f;buildHyroxTable();rebuildCharts();
 }
 
+function setYearFilter(year,btn){
+  document.querySelectorAll('#year-filters .f-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  state.yearFilter=year;
+  buildHyroxTable();
+  rebuildCharts();
+}
+
 function toSec(t){if(!t)return null;const[m,s]=t.split(':').map(Number);return m*60+s;}
 
 function buildHyroxTable(){
   const tbl=document.getElementById('hyrox-tbl');if(!tbl)return;
-  const vis=HX.cols.map((c,i)=>({c,i})).filter(({c})=>state.persons.has(c.user)&&(state.modFilter==='all'||c.mod===state.modFilter));
+  const vis=HX.cols.map((c,i)=>({c,i}))
+    .filter(({c})=>state.persons.has(c.user)&&(state.modFilter==='all'||c.mod===state.modFilter))
+    .filter(({c})=>state.yearFilter==='all'||c.date.startsWith(state.yearFilter));
   const hdr=vis.map(({c})=>`<th><div class="col-header">
     <span class="col-dot" style="background:${c.color}"></span>
     <span>${c.label}</span>
@@ -2331,7 +2350,9 @@ function setStationFilter(st,btn){
 }
 
 function getVisibleCols(){
-  return HX.cols.map((c,i)=>({c,i})).filter(({c})=>state.persons.has(c.user)&&(state.modFilter==='all'||c.mod===state.modFilter));
+  return HX.cols.map((c,i)=>({c,i}))
+    .filter(({c})=>state.persons.has(c.user)&&(state.modFilter==='all'||c.mod===state.modFilter))
+    .filter(({c})=>state.yearFilter==='all'||c.date.startsWith(state.yearFilter));
 }
 
 function destroyChart(id){if(chartsInstances[id]){chartsInstances[id].destroy();delete chartsInstances[id];}}
@@ -2364,8 +2385,7 @@ function buildEvolChart(){
     data:{labels:allLabels.map(formatFechaLegible),datasets:fixedDs},
     options:{
       responsive:true,
-      maintainAspectRatio:true,
-      aspectRatio: window.innerWidth <= 768 ? 1.5 : 2,
+      maintainAspectRatio:false,
       plugins:{
         legend:{
           display:true,
@@ -2412,8 +2432,7 @@ function buildStationChart(){
     data:{labels,datasets:[{data:vals,backgroundColor:colors,borderRadius:0}]},
     options:{
       responsive:true,
-      maintainAspectRatio:true,
-      aspectRatio: window.innerWidth <= 768 ? 1.3 : 2,
+      maintainAspectRatio:false,
       plugins:{legend:{display:false}},
       scales:{
         y:{
@@ -2603,8 +2622,7 @@ function buildSwimChart(){
     data:{labels:activeDists,datasets},
     options:{
       responsive:true,
-      maintainAspectRatio:true,
-      aspectRatio: window.innerWidth <= 768 ? 1.5 : 2,
+      maintainAspectRatio:false,
       plugins:{
         legend:{
           display:true,
@@ -2773,8 +2791,7 @@ function buildRunChart(){
     data:{labels:activeDists.map(d=>d.toUpperCase()),datasets},
     options:{
       responsive:true,
-      maintainAspectRatio:true,
-      aspectRatio: window.innerWidth <= 768 ? 1.5 : 2,
+      maintainAspectRatio:false,
       plugins:{
         legend:{
           display:true,
