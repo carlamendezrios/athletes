@@ -1711,6 +1711,44 @@ function listenToFirebaseChanges() {
       console.log('✅ Eventos personalizados actualizados desde Firebase');
     }
   });
+  
+  // Escuchar resultados deportivos
+  database.ref('resultados').on('value', (snapshot) => {
+    if (isSyncing) return;
+    const data = snapshot.val();
+    if (data) {
+      isSyncing = true;
+      
+      // Actualizar datos de Hyrox
+      if (data.hyrox && Array.isArray(data.hyrox)) {
+        cargarResultadosHyrox(data.hyrox);
+      }
+      
+      // Actualizar datos de Running
+      if (data.running && Array.isArray(data.running)) {
+        cargarResultadosRunning(data.running);
+      }
+      
+      // Actualizar datos de Swim
+      if (data.swim && Array.isArray(data.swim)) {
+        cargarResultadosSwim(data.swim);
+      }
+      
+      // Reconstruir tablas y gráficos si estamos en página de resultados
+      const resPage = document.getElementById('page-resultados');
+      if (resPage && resPage.classList.contains('active')) {
+        buildHyroxTable();
+        rebuildCharts();
+        buildRunTable();
+        buildRunChart();
+        buildSwimTable();
+        buildSwimChart();
+      }
+      
+      isSyncing = false;
+      console.log('✅ Resultados deportivos actualizados desde Firebase');
+    }
+  });
 }
 
 // Migrar datos de localStorage a Firebase (solo primera vez)
@@ -2827,6 +2865,77 @@ function buildRunChart(){
 }
 
 // ══════════════════════════════════════════════════════════════
+// ── CARGAR RESULTADOS DESDE FIREBASE ──────────────────────────
+// ══════════════════════════════════════════════════════════════
+
+function cargarResultadosHyrox(data) {
+  // Limpiar HX.cols
+  HX.cols = [];
+  
+  // Cargar nuevos datos
+  data.forEach((registro, idx) => {
+    HX.cols.push({
+      label: registro.atleta,
+      date: registro.fecha,
+      mod: registro.modalidad,
+      user: registro.user,
+      color: registro.color
+    });
+    
+    // Cargar tiempos en HX.times
+    const t = registro.tiempos;
+    HX.times[0][idx] = t.run1;
+    HX.times[1][idx] = t.run2;
+    HX.times[2][idx] = t.run3;
+    HX.times[3][idx] = t.run4;
+    HX.times[4][idx] = t.run5;
+    HX.times[5][idx] = t.run6;
+    HX.times[6][idx] = t.run7;
+    HX.times[7][idx] = t.run8;
+    HX.times[8][idx] = t.skierg;
+    HX.times[9][idx] = t.sledPush;
+    HX.times[10][idx] = t.sledPull;
+    HX.times[11][idx] = t.bbj;
+    HX.times[12][idx] = t.row;
+    HX.times[13][idx] = t.farmerCarry;
+    HX.times[14][idx] = t.sLunges;
+    HX.times[15][idx] = t.wallBalls;
+  });
+  
+  console.log('✅ Datos Hyrox cargados:', HX.cols.length, 'registros');
+}
+
+function cargarResultadosRunning(data) {
+  // Reemplazar RUN_DATA global
+  window.RUN_DATA = data.map(r => ({
+    user: r.user,
+    name: r.atleta,
+    color: r.color,
+    dist: r.distancia,
+    race: r.carrera,
+    date: r.fecha,
+    time: r.tiempo
+  }));
+  
+  console.log('✅ Datos Running cargados:', RUN_DATA.length, 'registros');
+}
+
+function cargarResultadosSwim(data) {
+  // Reemplazar SWIM_DATA global
+  window.SWIM_DATA = data.map(r => ({
+    user: r.user,
+    name: r.atleta,
+    color: r.color,
+    dist: r.distancia,
+    race: r.prueba,
+    date: r.fecha,
+    time: r.tiempo
+  }));
+  
+  console.log('✅ Datos Swim cargados:', SWIM_DATA.length, 'registros');
+}
+
+// ══════════════════════════════════════════════════════════════
 // ── EXCEL IMPORT/EXPORT ───────────────────────────────────────
 // ══════════════════════════════════════════════════════════════
 
@@ -2851,40 +2960,219 @@ async function importarExcel(event) {
     
     let importados = 0;
     let errores = 0;
+    const erroresDetalle = [];
     
+    // Objeto para almacenar todos los resultados
+    const resultados = {
+      hyrox: [],
+      running: [],
+      swim: []
+    };
+    
+    // ═══════════════════════════════════════════════════════════
     // Procesar hoja de Hyrox
+    // ═══════════════════════════════════════════════════════════
     if (workbook.SheetNames.includes('Hyrox')) {
       const sheet = workbook.Sheets['Hyrox'];
       const jsonData = XLSX.utils.sheet_to_json(sheet);
-      // Aquí procesarías los datos de Hyrox
-      console.log('Datos Hyrox:', jsonData);
-      importados += jsonData.length;
+      
+      jsonData.forEach((row, idx) => {
+        try {
+          // Validar campos requeridos
+          if (!row.Atleta || !row.Fecha || !row.Modalidad) {
+            erroresDetalle.push(`Hyrox fila ${idx + 2}: Faltan campos obligatorios (Atleta, Fecha, Modalidad)`);
+            errores++;
+            return;
+          }
+          
+          // Mapear nombre a user y color
+          const userMap = {
+            'Manu': {id: 'manu', color: '#7BA882'},
+            'Carla': {id: 'carla', color: '#C97B5E'},
+            'Ester': {id: 'ester', color: '#6E9AB5'},
+            'Cande': {id: 'cande', color: '#B5A06B'},
+            'Meri': {id: 'meri', color: '#9B7BB5'},
+            'Ade': {id: 'ade', color: '#6E9AB5'},
+            'Car': {id: 'car', color: '#B5A06B'}
+          };
+          
+          const userData = userMap[row.Atleta];
+          if (!userData) {
+            erroresDetalle.push(`Hyrox fila ${idx + 2}: Atleta "${row.Atleta}" no reconocido`);
+            errores++;
+            return;
+          }
+          
+          // Validar modalidad
+          const mod = row.Modalidad.toLowerCase();
+          if (mod !== 'single' && mod !== 'dobles') {
+            erroresDetalle.push(`Hyrox fila ${idx + 2}: Modalidad debe ser "single" o "dobles"`);
+            errores++;
+            return;
+          }
+          
+          // Crear registro
+          const registro = {
+            atleta: row.Atleta,
+            fecha: row.Fecha,
+            modalidad: mod,
+            user: userData.id,
+            color: userData.color,
+            tiempos: {
+              run1: row['Run 1'] || '',
+              run2: row['Run 2'] || '',
+              run3: row['Run 3'] || '',
+              run4: row['Run 4'] || '',
+              run5: row['Run 5'] || '',
+              run6: row['Run 6'] || '',
+              run7: row['Run 7'] || '',
+              run8: row['Run 8'] || '',
+              skierg: row['SkiErg'] || '',
+              sledPush: row['Sled Push'] || '',
+              sledPull: row['Sled Pull'] || '',
+              bbj: row['BBJ'] || '',
+              row: row['Row'] || '',
+              farmerCarry: row['Farmer Carry'] || '',
+              sLunges: row['S. Lunges'] || '',
+              wallBalls: row['Wall Balls'] || ''
+            }
+          };
+          
+          resultados.hyrox.push(registro);
+          importados++;
+        } catch (err) {
+          erroresDetalle.push(`Hyrox fila ${idx + 2}: ${err.message}`);
+          errores++;
+        }
+      });
     }
     
+    // ═══════════════════════════════════════════════════════════
     // Procesar hoja de Running
+    // ═══════════════════════════════════════════════════════════
     if (workbook.SheetNames.includes('Running')) {
       const sheet = workbook.Sheets['Running'];
       const jsonData = XLSX.utils.sheet_to_json(sheet);
-      console.log('Datos Running:', jsonData);
-      importados += jsonData.length;
+      
+      jsonData.forEach((row, idx) => {
+        try {
+          if (!row.Atleta || !row.Fecha || !row.Distancia || !row.Tiempo) {
+            erroresDetalle.push(`Running fila ${idx + 2}: Faltan campos obligatorios`);
+            errores++;
+            return;
+          }
+          
+          const userMap = {
+            'Manu': {id: 'manu', color: '#7BA882'},
+            'Carla': {id: 'carla', color: '#C97B5E'},
+            'Ester': {id: 'ester', color: '#6E9AB5'},
+            'Cande': {id: 'cande', color: '#B5A06B'}
+          };
+          
+          const userData = userMap[row.Atleta];
+          if (!userData) {
+            erroresDetalle.push(`Running fila ${idx + 2}: Atleta no reconocido`);
+            errores++;
+            return;
+          }
+          
+          resultados.running.push({
+            atleta: row.Atleta,
+            fecha: row.Fecha,
+            carrera: row.Carrera || '',
+            distancia: row.Distancia,
+            tiempo: row.Tiempo,
+            user: userData.id,
+            color: userData.color
+          });
+          importados++;
+        } catch (err) {
+          erroresDetalle.push(`Running fila ${idx + 2}: ${err.message}`);
+          errores++;
+        }
+      });
     }
     
+    // ═══════════════════════════════════════════════════════════
     // Procesar hoja de Swim
+    // ═══════════════════════════════════════════════════════════
     if (workbook.SheetNames.includes('Swim')) {
       const sheet = workbook.Sheets['Swim'];
       const jsonData = XLSX.utils.sheet_to_json(sheet);
-      console.log('Datos Swim:', jsonData);
-      importados += jsonData.length;
+      
+      jsonData.forEach((row, idx) => {
+        try {
+          if (!row.Atleta || !row.Fecha || !row.Distancia || !row.Tiempo) {
+            erroresDetalle.push(`Swim fila ${idx + 2}: Faltan campos obligatorios`);
+            errores++;
+            return;
+          }
+          
+          const userMap = {
+            'Manu': {id: 'manu', color: '#7BA882'},
+            'Carla': {id: 'carla', color: '#C97B5E'},
+            'Ester': {id: 'ester', color: '#6E9AB5'},
+            'Cande': {id: 'cande', color: '#B5A06B'}
+          };
+          
+          const userData = userMap[row.Atleta];
+          if (!userData) {
+            erroresDetalle.push(`Swim fila ${idx + 2}: Atleta no reconocido`);
+            errores++;
+            return;
+          }
+          
+          resultados.swim.push({
+            atleta: row.Atleta,
+            fecha: row.Fecha,
+            prueba: row.Prueba || '',
+            distancia: row.Distancia,
+            tiempo: row.Tiempo,
+            user: userData.id,
+            color: userData.color
+          });
+          importados++;
+        } catch (err) {
+          erroresDetalle.push(`Swim fila ${idx + 2}: ${err.message}`);
+          errores++;
+        }
+      });
     }
     
-    alert(`✅ Importación completada\n\n${importados} registros importados${errores > 0 ? `\n${errores} errores` : ''}`);
+    // ═══════════════════════════════════════════════════════════
+    // Guardar en Firebase
+    // ═══════════════════════════════════════════════════════════
+    if (importados > 0) {
+      try {
+        await database.ref('resultados').set(resultados);
+        console.log('✅ Resultados guardados en Firebase:', resultados);
+      } catch (err) {
+        console.error('Error guardando en Firebase:', err);
+        alert('❌ Error guardando en Firebase: ' + err.message);
+        event.target.value = '';
+        return;
+      }
+    }
+    
+    // Mostrar resultado
+    let mensaje = `✅ Importación completada\n\n${importados} registros importados`;
+    if (errores > 0) {
+      mensaje += `\n${errores} errores encontrados`;
+      if (erroresDetalle.length > 0) {
+        mensaje += '\n\nDetalles:\n' + erroresDetalle.slice(0, 5).join('\n');
+        if (erroresDetalle.length > 5) {
+          mensaje += `\n... y ${erroresDetalle.length - 5} más`;
+        }
+      }
+    }
+    alert(mensaje);
     
     // Limpiar input
     event.target.value = '';
     
   } catch (error) {
     console.error('Error importando Excel:', error);
-    alert('❌ Error al importar el archivo Excel.\nAsegúrate de usar la plantilla correcta.');
+    alert('❌ Error al importar el archivo Excel.\n\n' + error.message);
   }
 }
 
