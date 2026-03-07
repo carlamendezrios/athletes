@@ -1714,39 +1714,58 @@ function listenToFirebaseChanges() {
   
   // Escuchar resultados deportivos
   database.ref('resultados').on('value', (snapshot) => {
-    if (isSyncing) return;
+    console.log('🔥 Firebase: Resultados actualizados');
+    
+    if (isSyncing) {
+      console.log('⏭️ Saltando actualización (isSyncing=true)');
+      return;
+    }
+    
     const data = snapshot.val();
+    console.log('📦 Datos recibidos:', data);
+    
     if (data) {
       isSyncing = true;
       
       // Actualizar datos de Hyrox
       if (data.hyrox && Array.isArray(data.hyrox)) {
+        console.log('📊 Cargando Hyrox...', data.hyrox.length, 'registros');
         cargarResultadosHyrox(data.hyrox);
+      } else {
+        console.log('⚠️ No hay datos de Hyrox o no es array:', data.hyrox);
       }
       
       // Actualizar datos de Running
       if (data.running && Array.isArray(data.running)) {
+        console.log('🏃 Cargando Running...', data.running.length, 'registros');
         cargarResultadosRunning(data.running);
       }
       
       // Actualizar datos de Swim
       if (data.swim && Array.isArray(data.swim)) {
+        console.log('🏊 Cargando Swim...', data.swim.length, 'registros');
         cargarResultadosSwim(data.swim);
       }
       
-      // Reconstruir tablas y gráficos si estamos en página de resultados
-      const resPage = document.getElementById('page-resultados');
-      if (resPage && resPage.classList.contains('active')) {
-        buildHyroxTable();
-        rebuildCharts();
-        buildRunTable();
-        buildRunChart();
-        buildSwimTable();
-        buildSwimChart();
-      }
+      // SIEMPRE reconstruir tablas y gráficos
+      console.log('🔄 Reconstruyendo UI...');
+      setTimeout(() => {
+        if (state.sportType === 'hyrox' || state.sportType === 'hybrid' || state.sportType === 'games') {
+          buildHyroxTable();
+          rebuildCharts();
+        } else if (state.sportType === 'run') {
+          buildRunTable();
+          buildRunChart();
+        } else if (state.sportType === 'swim') {
+          buildSwimTable();
+          buildSwimChart();
+        }
+      }, 100);
       
       isSyncing = false;
       console.log('✅ Resultados deportivos actualizados desde Firebase');
+    } else {
+      console.log('⚠️ No hay datos en resultados/');
     }
   });
 }
@@ -2869,11 +2888,27 @@ function buildRunChart(){
 // ══════════════════════════════════════════════════════════════
 
 function cargarResultadosHyrox(data) {
+  console.log('📊 Cargando datos Hyrox desde Firebase:', data);
+  
   // Limpiar HX.cols
   HX.cols = [];
   
+  // Redimensionar HX.times si es necesario
+  const numRegistros = data.length;
+  HX.stations.forEach((_, idx) => {
+    if (!HX.times[idx]) {
+      HX.times[idx] = [];
+    }
+    // Asegurar que el array tiene suficiente espacio
+    while (HX.times[idx].length < numRegistros) {
+      HX.times[idx].push('');
+    }
+  });
+  
   // Cargar nuevos datos
   data.forEach((registro, idx) => {
+    console.log(`  - Registro ${idx}:`, registro.atleta, registro.fecha);
+    
     HX.cols.push({
       label: registro.atleta,
       date: registro.fecha,
@@ -2884,25 +2919,26 @@ function cargarResultadosHyrox(data) {
     
     // Cargar tiempos en HX.times
     const t = registro.tiempos;
-    HX.times[0][idx] = t.run1;
-    HX.times[1][idx] = t.run2;
-    HX.times[2][idx] = t.run3;
-    HX.times[3][idx] = t.run4;
-    HX.times[4][idx] = t.run5;
-    HX.times[5][idx] = t.run6;
-    HX.times[6][idx] = t.run7;
-    HX.times[7][idx] = t.run8;
-    HX.times[8][idx] = t.skierg;
-    HX.times[9][idx] = t.sledPush;
-    HX.times[10][idx] = t.sledPull;
-    HX.times[11][idx] = t.bbj;
-    HX.times[12][idx] = t.row;
-    HX.times[13][idx] = t.farmerCarry;
-    HX.times[14][idx] = t.sLunges;
-    HX.times[15][idx] = t.wallBalls;
+    HX.times[0][idx] = t.run1 || '';
+    HX.times[1][idx] = t.run2 || '';
+    HX.times[2][idx] = t.run3 || '';
+    HX.times[3][idx] = t.run4 || '';
+    HX.times[4][idx] = t.run5 || '';
+    HX.times[5][idx] = t.run6 || '';
+    HX.times[6][idx] = t.run7 || '';
+    HX.times[7][idx] = t.run8 || '';
+    HX.times[8][idx] = t.skierg || '';
+    HX.times[9][idx] = t.sledPush || '';
+    HX.times[10][idx] = t.sledPull || '';
+    HX.times[11][idx] = t.bbj || '';
+    HX.times[12][idx] = t.row || '';
+    HX.times[13][idx] = t.farmerCarry || '';
+    HX.times[14][idx] = t.sLunges || '';
+    HX.times[15][idx] = t.wallBalls || '';
   });
   
   console.log('✅ Datos Hyrox cargados:', HX.cols.length, 'registros');
+  console.log('HX.cols:', HX.cols);
 }
 
 function cargarResultadosRunning(data) {
